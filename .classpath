@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry exported="true" kind="lib" path="/run/media/neagaze/9EB0D628B0D606A5/Program Files (x86)/Anywhere Software/Basic4android/Libraries/basic4android-libraries-2013-2014/Dialogs/Dialogs.jar"/>
+	<classpathentry exported="true" kind="lib" path="/run/media/neagaze/9EB0D628B0D606A5/Program Files (x86)/Anywhere Software/Basic4android/Libraries/B4AShared.jar"/>
+	<classpathentry exported="true" kind="lib" path="/run/media/neagaze/9EB0D628B0D606A5/Program Files (x86)/Anywhere Software/Basic4android/Libraries/Core.jar"/>
+	<classpathentry exported="true" kind="lib" path="/run/media/neagaze/9EB0D628B0D606A5/Program Files (x86)/Anywhere Software/Basic4android/Libraries/SWE_Lib.jar"/>
+	<classpathentry exported="true" kind="lib" path="/run/media/neagaze/9EB0D628B0D606A5/Program Files (x86)/Anywhere Software/Basic4android/Libraries/DateUtils.jar"/>
+	<classpathentry exported="true" kind="lib" path="/media/D/work/odesk/Transits program source code - b4A and java (5) 2/Parse.com/Parse-1.4.1/Parse-1.4.1.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

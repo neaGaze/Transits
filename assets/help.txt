@@ -1,0 +1,53 @@
+
+Thank you for using Transits (v1.01) by Allen Edwall (http://www.astrowin.org - android@astrowin.org).
+
+The checkbox labeled "Details" at the top center of the screen enables you to see planet positions in addition to interpretations (checked) or just interpretations (unchecked).
+
+The "Help" button below the "Details" checkbox toggles the HELP screen.
+
+What is 24-hr time?
+
+12 am midnight = 0 hours
+1 am = 1 hours
+11 am = 11 hours
+12 pm noon = 12 hours
+1 pm = 13 hours
+2 pm = 14 hours
+11 pm = 23 hours
+
+
+Information about time zones - the scientific and astrological communities use Greenwich Mean Time (GMT or UT) as the standard time reference. Transits requires you to set your natal time zone correctly. For those who are not familiar with time zones, below is a table that shows you how many hours you must add to or subtract from GMT to get your local time zone.
+
+NOTE: If you were born during Daylight Saving Time or Summer Time, then add 1 hour to your standard time zone. Examples are given below.
+
+EDT is a time zone of -4
+EST is a time zone of -5
+CDT is a time zone of -5
+CST is a time zone of -6
+MDT is a time zone of -6
+MST is a time zone of -7
+PDT is a time zone of -7
+PST is a time zone of -8
+
+CET is a time zone of 1
+CET Summer is a time zone of 2
+EET is a time zone of 2
+EET Summer is a time zone of 3
+
+IST is a time zone of 5.5
+
+AWST is a time zone of 8
+AWDT is a time zone of 9
+AEST is a time zone of 10
+AEDT is a time zone of 11
+
+Example:
+
+When it is 4:00 am PST in California, USA, then it is 12:00 pm noon (12.00 hours) GMT (4 + 8 hours).
+
+When it is 8:30 pm IST in India, then it is 3:00 pm (15.00 hours) GMT.
+         
+
+NOTE: If you were born during Daylight Saving Time or Summer Time, then add 1 hour to your standard time zone.
+
+

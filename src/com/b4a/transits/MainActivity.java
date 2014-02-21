@@ -47,6 +47,11 @@ public class MainActivity extends Activity implements B4AActivity{
     public static WeakReference<Activity> previousOne; 
     private Boolean onKeySubExist = null;
     private Boolean onKeyUpSubExist = null;
+    
+
+	public static final int INSERT_ID = Menu.FIRST;
+	private static final int DELETE_ID = Menu.FIRST + 1;
+	private static final int ACTIVITY_CREATE = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -125,23 +130,7 @@ public class MainActivity extends Activity implements B4AActivity{
 		      android.content.Intent data) {
 			processBA.onActivityResult(requestCode, resultCode, data);
 		}
-	    
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		
-		if (menuItems == null)
-			return false;
-		
-		for (B4AMenuItem bmi : menuItems) {
-			MenuItem mi = menu.add(bmi.title);
-			
-			if (bmi.drawable != null)
-				mi.setIcon(bmi.drawable);
-			mi.setOnMenuItemClickListener(new B4AMenuItemsClickListener(bmi.eventName.toLowerCase(BA.cul)));
-		}
-		return true;
-	}
+	 
 
 	public void addMenuItem(B4AMenuItem item) {
 		if (menuItems == null)
@@ -1582,4 +1571,45 @@ return "";
 		return 0;
 	}
 	
+	/**
+	 * Here goes my Code
+	 * **/
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		/*super.onCreateOptionsMenu(menu);
+		
+		if (menuItems == null)
+			return false;
+		
+		for (B4AMenuItem bmi : menuItems) {
+			MenuItem mi = menu.add(bmi.title);
+			
+			if (bmi.drawable != null)
+				mi.setIcon(bmi.drawable);
+			mi.setOnMenuItemClickListener(new B4AMenuItemsClickListener(bmi.eventName.toLowerCase(BA.cul)));
+		}
+		return true;*/
+		
+		boolean result = super.onCreateOptionsMenu(menu);
+		menu.add(0, INSERT_ID, 0, R.string.menu_insert);
+		return result;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case INSERT_ID:{
+			Toast.makeText(MainActivity.this, "Add User Clicked", Toast.LENGTH_SHORT).show();
+			gotoSignUpPage();
+		}
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+	
+	private void gotoSignUpPage() {
+	//	Intent i = new Intent(this, CreateTodo.class);
+	//	startActivityForResult(i, ACTIVITY_CREATE);
+	}
 }

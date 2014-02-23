@@ -9,64 +9,82 @@
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-	
-	<!--
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!--
 	  IMPORTANT: If you change the package name of this sample app, change
 	  "com.parse.tutorials.pushnotifications.permission.C2D_MESSAGE" in the
 	  lines below to match the new package name.
-	-->
-	<permission android:name="com.b4a.transits.permission.C2D_MESSAGE"
-		android:protectionLevel="signature" />
-	<uses-permission android:name="com.b4a.transits.permission.C2D_MESSAGE" />
-	
+    -->
+    <permission
+        android:name="com.b4a.transits.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.b4a.transits.permission.C2D_MESSAGE" />
+
     <application
         android:name="com.b4a.transits.TransitApplication"
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:debuggable="true">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="com.b4a.transits.MainActivity"
+            android:name="com.b4a.transits.SplashScreen"
             android:label="@string/app_name"
-            android:launchMode="singleTop" 
-            android:screenOrientation="unspecified" 
-            android:windowSoftInputMode="stateHidden" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-       <service android:name="com.parse.PushService" />
-		<receiver android:name="com.parse.ParseBroadcastReceiver">
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED" />
-				<action android:name="android.intent.action.USER_PRESENT" />
-			</intent-filter>
-		</receiver>
-		<receiver android:name="com.parse.GcmBroadcastReceiver"
-			android:permission="com.google.android.c2dm.permission.SEND">
-			<intent-filter>
-				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
-				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+        <activity
+            android:name="com.b4a.transits.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
 
-				<!--
+        <service android:name="com.parse.PushService" />
+
+        <receiver android:name="com.parse.ParseBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <!--
 				  IMPORTANT: If you change the package name of this sample app,
 				  change "com.parse.tutorials.pushnotifications" in the lines
 				  below to match the new package name.
-				-->
-				<category android:name="com.b4a.transits" />
-			</intent-filter>
-		</receiver>
-        
+                -->
+                <category android:name="com.b4a.transits" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.b4a.transits.AddUserActivity"
+            android:label="@string/title_activity_add_user" >
+        </activity>
+        <activity
+            android:name="com.b4a.transits.LogInActivity"
+            android:label="@string/title_activity_log_in" >
+        </activity>
     </application>
 
 </manifest>

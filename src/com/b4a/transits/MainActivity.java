@@ -3,9 +3,17 @@ package com.b4a.transits;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import com.parse.ParseAnalytics;
+
 import android.os.Bundle;
+import android.R.integer;
+import android.R.string;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.*;
@@ -50,8 +58,13 @@ public class MainActivity extends Activity implements B4AActivity{
     
 
 	public static final int INSERT_ID = Menu.FIRST;
-	private static final int DELETE_ID = Menu.FIRST + 1;
+	private static final int LOGIN_ID = Menu.FIRST + 1;
+	private static final int LOGOUT_ID = Menu.FIRST + 2;
+	private static final int SAVE_ID = Menu.FIRST + 3;
 	private static final int ACTIVITY_CREATE = 0;
+	private static final int LOGIN_CODE = 1;
+	
+	private String currentUser;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +101,18 @@ public class MainActivity extends Activity implements B4AActivity{
 		afterFirstLayout = false;
 		BA.handler.postDelayed(new WaitForLayout(), 5);
 		
+		//Retrieve logged in user's info
+		Intent intent = getIntent();
+		currentUser = intent.getStringExtra("uname");
+		if(currentUser.length() != 0)
+			CustomToast.showToast(this, "You are logged in as,"+currentUser);
+		else
+			CustomToast.showToast(this, "You are anonymous");
+		
+		// Track app opens.
+		ParseAnalytics.trackAppOpened(getIntent());
+		
 	}
-
 	 
 	 @Override 
 		public void onPause() {
@@ -125,11 +148,7 @@ public class MainActivity extends Activity implements B4AActivity{
 	        }
 		}
 	
-		@Override
-		protected void onActivityResult(int requestCode, int resultCode,
-		      android.content.Intent data) {
-			processBA.onActivityResult(requestCode, resultCode, data);
-		}
+	
 	 
 
 	public void addMenuItem(B4AMenuItem item) {
@@ -1573,43 +1592,100 @@ return "";
 	
 	/**
 	 * Here goes my Code
-	 * **/
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		/*super.onCreateOptionsMenu(menu);
-		
-		if (menuItems == null)
-			return false;
-		
-		for (B4AMenuItem bmi : menuItems) {
-			MenuItem mi = menu.add(bmi.title);
-			
-			if (bmi.drawable != null)
-				mi.setIcon(bmi.drawable);
-			mi.setOnMenuItemClickListener(new B4AMenuItemsClickListener(bmi.eventName.toLowerCase(BA.cul)));
-		}
-		return true;*/
-		
-		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(0, INSERT_ID, 0, R.string.menu_insert);
-		return result;
-	}
-	
+	 * **/		
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case INSERT_ID:{
-			Toast.makeText(MainActivity.this, "Add User Clicked", Toast.LENGTH_SHORT).show();
-			gotoSignUpPage();
-		}
-			return true;
+			case INSERT_ID:{
+				gotoSignUpPage();
+				break;
+			}
+			case LOGIN_ID:{
+				gotoLoginPage();
+				break;
+			}
+			case LOGOUT_ID:{
+			//	Log.d("Login name", "Logged in as, "+ParseController.getCurrentUser());
+			//	ParseController.saveInInstallation(ParseController.getCurrentUser());
+				
+			//	ParseController.getCloudServiceData();
+				
+				ParseController.logoutUser();
+				Editor saveEditor = getSharedPreferences("TransitPref", Context.MODE_PRIVATE).edit();
+				saveEditor.putString("uname", "");
+				saveEditor.putString("pwd", "");
+				saveEditor.commit();
+				break;
+			}
+			default:
+				break;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
 	
 	private void gotoSignUpPage() {
-	//	Intent i = new Intent(this, CreateTodo.class);
-	//	startActivityForResult(i, ACTIVITY_CREATE);
+		Intent i = new Intent(this, AddUserActivity.class);
+		startActivityForResult(i, ACTIVITY_CREATE);
+	}
+	
+	private void gotoLoginPage() {
+		Intent i = new Intent(this, LogInActivity.class);
+		startActivityForResult(i,LOGIN_CODE);
+	}
+	
+	/**
+	 * Here goes the modified files
+	 * **/
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		boolean result = super.onCreateOptionsMenu(menu);
+		menu.add(0, INSERT_ID, 0, R.string.menu_insert);
+		menu.add(0,LOGIN_ID, 1, "Login");
+		menu.add(0, LOGOUT_ID, 2, "Logout");
+		return result;
+	}	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	//	processBA.onActivityResult(requestCode, resultCode, intent);
+		super.onActivityResult(requestCode, resultCode, intent);
+		if (intent == null) {
+			return;
+		}
+		if(requestCode == ACTIVITY_CREATE) {
+			final Bundle extras = intent.getExtras();
+		
+			String uname = extras.getString("uname");
+			String pwd = extras.getString("pwd");
+			String email = extras.getString("email");
+			String phone = extras.getString("phone");
+			String DOB = extras.getString("DOB");
+			DOB += "_"+extras.getString("TOB");
+		
+	//		Toast.makeText(MainActivity.this, "Uname: "+uname, Toast.LENGTH_SHORT).show();
+			ParseController.createUser(uname, pwd, DOB, email, phone);
+		}
+		if(requestCode == LOGIN_CODE) {
+			final Bundle extras = intent.getExtras();
+			String uname = extras.getString("uname");
+			String pwd = extras.getString("pwd");
+			
+			ParseController.loginUser(uname, pwd);
+			
+			Editor saveEditor = getSharedPreferences("TransitPref", Context.MODE_PRIVATE).edit();
+			saveEditor.putString("uname", uname);
+			saveEditor.putString("pwd", pwd);
+			saveEditor.commit();
+		}
+	}
+	
+	
+	/**
+	 * Returns the instance of this Activity
+	 * **/
+	public static MainActivity getMainContext() {
+		return mostCurrent;
 	}
 }

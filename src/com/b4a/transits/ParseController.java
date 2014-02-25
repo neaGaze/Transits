@@ -1,6 +1,7 @@
 package com.b4a.transits;
 
 import java.util.HashMap;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import com.parse.FunctionCallback;
 import com.parse.LogInCallback;
+import com.parse.ParseACL;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -43,9 +46,10 @@ public class ParseController {
 	/**
 	 * For creating new Client user
 	 ***/
-	public static void createUser(String uname, String pwd, String birthDate,
+	public static void createUser(final Context context, final String uname, final String pwd, String birthDate,
 			String email, String phone) {
-		ParseUser user = new ParseUser();
+		
+		ParseUser user = ParseUser.getCurrentUser();
 		user.setUsername(uname);
 		user.setPassword(pwd);
 		user.setEmail(email);
@@ -59,8 +63,17 @@ public class ParseController {
 				// TODO Auto-generated method stub
 				if (ex == null) {
 					Log.d("Created New User", "Look at the parse.com !!!");
-					CustomToast.showToast(MainActivity.getMainContext(),
-							"User Create >> Success!!");
+					
+					Editor saveEditor = context.getSharedPreferences("TransitPref",
+							Context.MODE_PRIVATE).edit();
+					// To indicate that the user is a registered user now
+					saveEditor.putString("uname", uname);
+					saveEditor.putString("pwd", pwd);
+					saveEditor.commit();
+					
+					CustomToast.showToast(context, "User Create >> Success!!");
+					
+					
 				} else {
 					Log.e("ParseException @ createUser", "" + ex.getMessage());
 				}
@@ -71,45 +84,22 @@ public class ParseController {
 	/**
 	 * For loggin in
 	 ***/
-	public static void loginUser(String uname, String pwd) {
+	public static void loginUser(final Context context, String uname, String pwd) {
 		ParseUser.logInInBackground(uname, pwd, new LogInCallback() {
 			public void done(ParseUser user, ParseException ex) {
 				if (user != null) {
 					Log.d("User logged in", "Hello !!, " + user.getUsername());
-					// CustomToast.showToast(MainActivity.getMainContext(),
-					// "User Login Success, "+user.getUsername());
+					 CustomToast.showToast(context,  "User Login Success, "+user.getUsername());
 				} else {
 					Log.e("ParseException @ LoginUser", "" + ex.getMessage());
 				}
 			}
 		});
 
+		
 		// Alternately to show the progress Dialog
-		new AsyncTask<Void, Void, Void>() {
-			@Override
-			protected void onPreExecute() {
-				// ProgressDialog.show(ToDoListActivity.this, "", "Loading...",
-				// true);
-				super.onPreExecute();
-			}
-
-			@Override
-			protected void onProgressUpdate(Void... values) {
-				super.onProgressUpdate(values);
-			}
-
-			@Override
-			protected Void doInBackground(Void... params) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-			}
-
-		};
+	//	LoginAsync asyncLogin = new LoginAsync();
+		
 	}
 
 	/**
@@ -142,9 +132,10 @@ public class ParseController {
 	/**
 	 * Save user data in installation
 	 * **/
-	public static void saveInInstallation(ParseUser user) {
+	public static void saveInInstallation(ParseUser user, final Context context) {
 		ParseInstallation inst = ParseController.getCurrentInstallation();
 		inst.put("user", user);
+		inst.setACL(new ParseACL(user));
 		inst.saveInBackground(new SaveCallback() {
 
 			@Override
@@ -152,13 +143,18 @@ public class ParseController {
 				// TODO Auto-generated method stub
 				if (ex == null) {
 					Log.v("Installation Success", "Look at parse.com !!!");
-					// CustomToast.showToast(MainActivity.getMainContext(),
-					// "Installation Success");
-				} else
+					Editor saveEditor = context.getSharedPreferences("TransitPref",
+							Context.MODE_PRIVATE).edit();
+					// To indicate that the user is anonymous already
+					saveEditor.putInt("anonymous", 1);
+					saveEditor.commit();
+				} else {
 					Log.e("ParseException @ saveInInstallation",
 							"" + ex.getMessage());
+					// Delete the ParseUser
+					}
 			}
-		});
+		}); 
 	}
 
 	/**
@@ -178,6 +174,48 @@ public class ParseController {
 						}
 					}
 				});
+	}
+	
+	/** For Login in asynchronous mode **/
+	private class LoginAsync extends AsyncTask<String, Void, Void> {
+		
+		private Context context;
+		public LoginAsync(Context cont) {
+			this.context = cont;
+		}
+		
+		public LoginAsync() {}
+		
+		@Override
+		protected void onPreExecute() {
+			
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			super.onProgressUpdate(values);
+			ProgressDialog.show(context, "", "Loading...", true);
+		}
+
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try {
+				ParseUser.logIn(params[0],params[1]);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			
+		}
+
 	}
 
 }

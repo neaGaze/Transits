@@ -7,6 +7,7 @@ import com.parse.ParseUser;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ public class SplashScreen extends Activity {
 
 	SharedPreferences sharedPreferences;
 	String uname, pwd;
+	int anonymous;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +52,21 @@ public class SplashScreen extends Activity {
         protected Void doInBackground(Void... arg0) {
            
            sharedPreferences = getSharedPreferences("TransitPref", Context.MODE_PRIVATE);
-           if(sharedPreferences.contains("uname")) {
-        	   uname = sharedPreferences.getString("uname", "");
-           }
-           else {
-        	   uname = "";
-           }
- 
-           if(sharedPreferences.contains("pwd")) {
-        	   pwd = sharedPreferences.getString("pwd", "");
-           }
-           else {
-        	   pwd = "";
-           }
            
+           if(sharedPreferences.contains("uname")) 
+        	   uname = sharedPreferences.getString("uname", "");
+           else 
+        	   uname = "";
+ 
+           if(sharedPreferences.contains("pwd")) 
+        	   pwd = sharedPreferences.getString("pwd", "");
+           else 
+        	   pwd = ""; 
+           
+           if(sharedPreferences.contains("anonymous")) 
+        	   anonymous = sharedPreferences.getInt("anonymous", 0);
+           else 
+        	   anonymous = 0; 
        
            if(uname != "" && pwd != "")
            {
@@ -77,18 +80,24 @@ public class SplashScreen extends Activity {
         		   Log.e("ParseException", ""+e.getMessage());
         	   }
            }
+           else if(anonymous == 1) {
+        	   
+           }
            else{
         	   ParseAnonymousUtils.logIn(new LogInCallback() {
 				
 				@Override
-				public void done(ParseUser arg0, ParseException ex) {
+				public void done(ParseUser parseUser, ParseException ex) {
 					// TODO Auto-generated method stub
-					if(ex == null)
+					if(ex == null) {
 						Log.d("Anonymous Login", "ANONYMOUS !!");
+						ParseController.saveInInstallation(parseUser, SplashScreen.this);
+					}
 					else
 						Log.e("ParseException  @ Anonymous login", ""+ex.getMessage());
 				}
 			});
+        	 
            }
            return null;
         }

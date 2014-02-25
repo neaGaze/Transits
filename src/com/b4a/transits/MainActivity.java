@@ -107,10 +107,10 @@ public class MainActivity extends Activity implements B4AActivity {
 		// Retrieve logged in user's info
 		Intent intent = getIntent();
 		currentUser = intent.getStringExtra("uname");
-		if (currentUser.length() != 0)
+		if ((currentUser.length() != 0))
 			CustomToast.showToast(this, "You are logged in as," + currentUser);
 		else
-			CustomToast.showToast(this, "You are anonymous");
+			CustomToast.showToast(this, "You are anonymous. Please signup for pleasant services");
 
 		// Track app opens.
 		ParseAnalytics.trackAppOpened(getIntent());
@@ -2113,16 +2113,15 @@ public class MainActivity extends Activity implements B4AActivity {
 			String DOB = extras.getString("DOB");
 			DOB += "_" + extras.getString("TOB");
 
-			// Toast.makeText(MainActivity.this, "Uname: "+uname,
-			// Toast.LENGTH_SHORT).show();
-			ParseController.createUser(uname, pwd, DOB, email, phone);
+			ParseController.createUser(this, uname, pwd, DOB, email, phone);
+			ParseController.loginUser(this ,uname, pwd);
 		}
 		if (requestCode == LOGIN_CODE) {
 			final Bundle extras = intent.getExtras();
 			String uname = extras.getString("uname");
 			String pwd = extras.getString("pwd");
 
-			ParseController.loginUser(uname, pwd);
+			ParseController.loginUser(this, uname, pwd);
 
 			Editor saveEditor = getSharedPreferences("TransitPref",
 					Context.MODE_PRIVATE).edit();
@@ -2135,7 +2134,7 @@ public class MainActivity extends Activity implements B4AActivity {
 	/**
 	 * Returns the instance of this Activity
 	 * **/
-	public static MainActivity getMainContext() {
+	public static Context getMainContext() {
 		return mostCurrent;
 	}
 }

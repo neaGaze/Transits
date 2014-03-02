@@ -222,8 +222,10 @@ containing a value of this type.
     }
     public static final class id {
         public static final int Login=0x7f04002a;
-        public static final int action_settings=0x7f04002c;
+        public static final int action_settings=0x7f04002e;
         public static final int button1=0x7f040011;
+        public static final int button2=0x7f04002c;
+        public static final int button3=0x7f04002d;
         public static final int buttonDOB=0x7f04000e;
         public static final int buttonTOB=0x7f040010;
         public static final int com_facebook_login_activity_progress_bar=0x7f040014;
@@ -254,7 +256,7 @@ containing a value of this type.
         public static final int editTextLoginPwd=0x7f04002b;
         public static final int imgLogo=0x7f040003;
         public static final int large=0x7f040002;
-        public static final int menu_signup=0x7f04002d;
+        public static final int menu_signup=0x7f04002f;
         public static final int normal=0x7f040001;
         public static final int picker_subtitle=0x7f040021;
         public static final int scrollView1=0x7f040004;
@@ -287,16 +289,20 @@ containing a value of this type.
         public static final int com_facebook_search_bar_layout=0x7f03000f;
         public static final int com_facebook_usersettingsfragment=0x7f030010;
         public static final int log_in_activity=0x7f030011;
+        public static final int sign_up=0x7f030012;
     }
     public static final class menu {
         public static final int add_user=0x7f090000;
         public static final int log_in=0x7f090001;
         public static final int main=0x7f090002;
         public static final int options_menu=0x7f090003;
-        public static final int splash_screen=0x7f090004;
+        public static final int sign_up=0x7f090004;
+        public static final int splash_screen=0x7f090005;
     }
     public static final class string {
         public static final int action_settings=0x7f07001a;
+        public static final int anonymous_string=0x7f07001c;
+        public static final int app_id=0x7f070021;
         public static final int app_name=0x7f070019;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
@@ -324,10 +330,11 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
         public static final int hello_world=0x7f07001b;
-        public static final int menu_insert=0x7f07001c;
-        public static final int title_activity_add_user=0x7f07001d;
-        public static final int title_activity_log_in=0x7f07001f;
-        public static final int title_activity_splash_screen=0x7f07001e;
+        public static final int menu_insert=0x7f07001d;
+        public static final int title_activity_add_user=0x7f07001e;
+        public static final int title_activity_log_in=0x7f070020;
+        public static final int title_activity_sign_up=0x7f070022;
+        public static final int title_activity_splash_screen=0x7f07001f;
     }
     public static final class style {
         /** 

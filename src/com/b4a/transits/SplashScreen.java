@@ -22,6 +22,11 @@ public class SplashScreen extends Activity {
 	String uname, pwd;
 	private int anonymous;
 
+	private static int UNREGISTERED = 0;
+	private static int ANONYMOUS = 1;
+	private static int PARSE = 2;
+	private static int FACEBOOK = 3;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,10 +62,11 @@ public class SplashScreen extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			sharedPreferences = getSharedPreferences("TransitPref",
 					Context.MODE_PRIVATE);
 
+			/** Fetch the shared Preferences **/
 			if (sharedPreferences.contains("uname"))
 				uname = sharedPreferences.getString("uname", "");
 			else
@@ -74,9 +80,10 @@ public class SplashScreen extends Activity {
 			if (sharedPreferences.contains("anonymous"))
 				anonymous = sharedPreferences.getInt("anonymous", 0);
 			else
-				anonymous = 0;
+				anonymous = UNREGISTERED;
 
-			if (uname != "" && pwd != "") {
+			/** Check what kind of login is this **/
+			if (anonymous == PARSE) {
 				try {
 					// ParseController.loginUser(uname, pwd);
 					ParseUser.logIn(uname, pwd);
@@ -87,24 +94,34 @@ public class SplashScreen extends Activity {
 					e.printStackTrace();
 					Log.e("ParseException", "" + e.getMessage());
 				}
-			} else if (anonymous == 1) {
-					
+			} else if (anonymous == ANONYMOUS) {
+
+			} else if (anonymous == FACEBOOK) {
+				// Login in Facebook and wait till login is success or fiasco
+
+			} else if (anonymous == UNREGISTERED) {
+
+				if (Connection.getConnectionAvailable(SplashScreen.this)) {
+					ParseAnonymousUtils.logIn(new LogInCallback() {
+
+						@Override
+						public void done(ParseUser parseUser, ParseException ex) {
+							// TODO Auto-generated method stub
+							if (ex == null) {
+								Log.d("Anonymous Login", "ANONYMOUS !!");
+								ParseController.saveInInstallation(parseUser,
+										SplashScreen.this);
+							} else
+								Log.e("ParseException  @ Anonymous login", ""
+										+ ex.getMessage());
+						}
+					});
+				}
+
 			} else {
-				ParseAnonymousUtils.logIn(new LogInCallback() {
-
-					@Override
-					public void done(ParseUser parseUser, ParseException ex) {
-						// TODO Auto-generated method stub
-						if (ex == null) {
-							Log.d("Anonymous Login", "ANONYMOUS !!");
-							ParseController.saveInInstallation(parseUser,
-									SplashScreen.this);
-						} else
-							Log.e("ParseException  @ Anonymous login",
-									"" + ex.getMessage());
-					}
-				});
-
+				CustomToast
+						.showToast(SplashScreen.this,
+								"Are you on dope? 'cause this ain't never gonna happen nigga' !!!");
 			}
 			return anonymous;
 		}
@@ -114,16 +131,18 @@ public class SplashScreen extends Activity {
 			super.onPostExecute(result);
 			// After completing http call
 			// will close this activity and lauch main activity
-			Log.d("RESULT", ""+result);
-			if (result == 0) {
+			Log.d("RESULT", "" + result);
+			if (result == UNREGISTERED || result == ANONYMOUS) {
 				Intent i = new Intent(SplashScreen.this, SignUpActivity.class);
 				startActivity(i);
-			}
-			else {
+			} else if (result == PARSE || result == FACEBOOK) {
 				Intent i = new Intent(SplashScreen.this, MainActivity.class);
 				i.putExtra("uname", uname);
 				i.putExtra("pwd", pwd);
 				startActivity(i);
+			} else {
+				CustomToast
+						.showToast(SplashScreen.this, "Go home you're drunk");
 			}
 			// close this activity
 			finish();

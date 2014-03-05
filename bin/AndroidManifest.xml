@@ -95,6 +95,10 @@
             android:name="com.b4a.transits.SignUpActivity"
             android:label="@string/title_activity_sign_up" >
         </activity>
+        <activity
+            android:name="com.b4a.transits.FacebookActivity"
+            android:label="@string/title_activity_facebook" >
+        </activity>
     </application>
 
 </manifest>

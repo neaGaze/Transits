@@ -1,7 +1,9 @@
 package com.b4a.transits;
 
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 import com.parse.PushService;
+
 import android.app.Application;
 
 public class TransitApplication extends Application{
@@ -19,5 +21,7 @@ public class TransitApplication extends Application{
 
 		// Specify an Activity to handle all pushes by default.
 		PushService.setDefaultPushCallback(this, MainActivity.class);
+	
+	    ParseFacebookUtils.initialize("658429227526786");
 	  }
 }

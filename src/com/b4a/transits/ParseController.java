@@ -46,16 +46,16 @@ public class ParseController {
 	/**
 	 * For creating new Client user
 	 ***/
-	public static void createUser(final Context context, final String uname, final String pwd, String birthDate,
-			String email, String phone) {
-		
+	public static void createUser(final Context context, final String uname,
+			final String pwd, String birthDate, String email, String phone) {
+
 		ParseUser user = ParseUser.getCurrentUser();
 		user.setUsername(uname);
 		user.setPassword(pwd);
 		user.setEmail(email);
 		user.put("birthDate", birthDate);
 		user.put("phone", phone);
-
+		
 		user.signUpInBackground(new SignUpCallback() {
 
 			@Override
@@ -63,17 +63,17 @@ public class ParseController {
 				// TODO Auto-generated method stub
 				if (ex == null) {
 					Log.d("Created New User", "Look at the parse.com !!!");
-					
-					Editor saveEditor = context.getSharedPreferences("TransitPref",
-							Context.MODE_PRIVATE).edit();
+
+					Editor saveEditor = context.getSharedPreferences(
+							"TransitPref", Context.MODE_PRIVATE).edit();
 					// To indicate that the user is a registered user now
 					saveEditor.putString("uname", uname);
 					saveEditor.putString("pwd", pwd);
+					saveEditor.putInt("anonymous", 2);
 					saveEditor.commit();
-					
+
 					CustomToast.showToast(context, "User Create >> Success!!");
-					
-					
+
 				} else {
 					Log.e("ParseException @ createUser", "" + ex.getMessage());
 				}
@@ -81,6 +81,36 @@ public class ParseController {
 		});
 	}
 
+	public static void createUserSynchronized(final Context context, final String uname,
+			final String pwd, String birthDate, String email, String phone) {
+
+		ParseUser user = ParseUser.getCurrentUser();
+		user.setUsername(uname);
+		user.setPassword(pwd);
+		user.setEmail(email);
+		user.put("birthDate", birthDate);
+		user.put("phone", phone);
+		
+		try {
+			user.signUp();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Log.d("Created New User", "Look at the parse.com !!!");
+
+		Editor saveEditor = context.getSharedPreferences(
+				"TransitPref", Context.MODE_PRIVATE).edit();
+		// To indicate that the user is a registered user now
+		saveEditor.putString("uname", uname);
+		saveEditor.putString("pwd", pwd);
+		saveEditor.putInt("anonymous", 2);
+		saveEditor.commit();
+
+		CustomToast.showToast(context, "User Create >> Success!!");
+	}
+	
 	/**
 	 * For loggin in
 	 ***/
@@ -89,17 +119,17 @@ public class ParseController {
 			public void done(ParseUser user, ParseException ex) {
 				if (user != null) {
 					Log.d("User logged in", "Hello !!, " + user.getUsername());
-					 CustomToast.showToast(context,  "User Login Success, "+user.getUsername());
+					CustomToast.showToast(context, "User Login Success, "
+							+ user.getUsername());
 				} else {
 					Log.e("ParseException @ LoginUser", "" + ex.getMessage());
 				}
 			}
 		});
 
-		
 		// Alternately to show the progress Dialog
-	//	LoginAsync asyncLogin = new LoginAsync();
-		
+		// LoginAsync asyncLogin = new LoginAsync();
+
 	}
 
 	/**
@@ -143,8 +173,8 @@ public class ParseController {
 				// TODO Auto-generated method stub
 				if (ex == null) {
 					Log.v("Installation Success", "Look at parse.com !!!");
-					Editor saveEditor = context.getSharedPreferences("TransitPref",
-							Context.MODE_PRIVATE).edit();
+					Editor saveEditor = context.getSharedPreferences(
+							"TransitPref", Context.MODE_PRIVATE).edit();
 					// To indicate that the user is anonymous already
 					saveEditor.putInt("anonymous", 1);
 					saveEditor.commit();
@@ -152,9 +182,10 @@ public class ParseController {
 					Log.e("ParseException @ saveInInstallation",
 							"" + ex.getMessage());
 					// Delete the ParseUser
-					}
+
+				}
 			}
-		}); 
+		});
 	}
 
 	/**
@@ -175,20 +206,22 @@ public class ParseController {
 					}
 				});
 	}
-	
+
 	/** For Login in asynchronous mode **/
 	private class LoginAsync extends AsyncTask<String, Void, Void> {
-		
+
 		private Context context;
+
 		public LoginAsync(Context cont) {
 			this.context = cont;
 		}
-		
-		public LoginAsync() {}
-		
+
+		public LoginAsync() {
+		}
+
 		@Override
 		protected void onPreExecute() {
-			
+
 			super.onPreExecute();
 		}
 
@@ -202,7 +235,7 @@ public class ParseController {
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			try {
-				ParseUser.logIn(params[0],params[1]);
+				ParseUser.logIn(params[0], params[1]);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -213,7 +246,7 @@ public class ParseController {
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			
+
 		}
 
 	}

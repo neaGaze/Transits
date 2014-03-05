@@ -15,7 +15,7 @@
         android:text="@string/anonymous_string" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonParse"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,21 +25,21 @@
         android:text="Login with Parse" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonFacebook"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
+        android:layout_alignBaseline="@+id/buttonParse"
+        android:layout_alignBottom="@+id/buttonParse"
         android:layout_alignParentRight="true"
         android:text="Login using Facebook" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonAnonymous"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/buttonParse"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:text="Continue as Anonymous" />

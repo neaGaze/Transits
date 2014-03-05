@@ -19,48 +19,59 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-public class AddUserActivity extends Activity implements OnClickListener{
-	
+public class AddUserActivity extends Activity implements OnClickListener {
+
 	private EditText uname, pwd, email, phone;
-	private Button signUp, DOBButton, TOBButton;
+	private Button signUp, DOBButton, TOBButton, addContact;
 	private String day, month, year, hour, minute, combinedDate, combinedTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_user);
-		
-		uname = (EditText)findViewById(R.id.editText1);
-		pwd = (EditText)findViewById(R.id.editText2);
-		email = (EditText)findViewById(R.id.editText3);
-		phone = (EditText)findViewById(R.id.editText4);
-		
+
+		uname = (EditText) findViewById(R.id.editText1);
+		pwd = (EditText) findViewById(R.id.editText2);
+		email = (EditText) findViewById(R.id.editText3);
+		phone = (EditText) findViewById(R.id.editText4);
+
 		DOBButton = (Button) findViewById(R.id.buttonDOB);
 		TOBButton = (Button) findViewById(R.id.buttonTOB);
+		addContact = (Button) findViewById(R.id.buttonAddContact);
 		DOBButton.setOnClickListener(this);
 		TOBButton.setOnClickListener(this);
-		
-		day = ""; month = ""; year = ""; hour = ""; minute="";
-		
+		addContact.setOnClickListener(this);
+
+		day = "";
+		month = "";
+		year = "";
+		hour = "";
+		minute = "";
+
 		signUp = (Button) findViewById(R.id.button1);
 		signUp.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Bundle bundle = new Bundle();
-				bundle.putString("uname", uname.getText().toString());
-				bundle.putString("pwd", pwd.getText().toString());
-				bundle.putString("email", email.getText().toString());
-				bundle.putString("phone", phone.getText().toString());
-				bundle.putString("DOB", combinedDate);
-				bundle.putString("TOB", combinedTime);
-
 				Intent intent = new Intent();
-				intent.putExtras(bundle);
-				setResult(RESULT_OK, intent);
+				if (verifyFields()) {
+
+					Bundle bundle = new Bundle();
+					bundle.putString("uname", uname.getText().toString());
+					bundle.putString("pwd", pwd.getText().toString());
+					bundle.putString("email", email.getText().toString());
+					bundle.putString("phone", phone.getText().toString());
+					bundle.putString("DOB", combinedDate);
+					bundle.putString("TOB", combinedTime);
+
+					intent.putExtras(bundle);
+
+					setResult(RESULT_OK, intent);
+				}
 				finish();
 			}
+
 		});
 	}
 
@@ -70,13 +81,13 @@ public class AddUserActivity extends Activity implements OnClickListener{
 		getMenuInflater().inflate(R.menu.add_user, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case 1:{
-			//	ParseController.saveInInstallation(ParseController.getCurrentUser());
-			}
+		case 1: {
+			// ParseController.saveInInstallation(ParseController.getCurrentUser());
+		}
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -85,7 +96,7 @@ public class AddUserActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		if(v.equals(DOBButton)) {
+		if (v.equals(DOBButton)) {
 
 			String saf = null;
 
@@ -103,9 +114,8 @@ public class AddUserActivity extends Activity implements OnClickListener{
 			Log.e("Date are: ", "" + year + "-" + month + "-" + day);
 			new DatePickerDialog(this, dateSet, Integer.parseInt(year),
 					Integer.parseInt(month), Integer.parseInt(day)).show();
-		
-		}
-		else if(v.equals(TOBButton)) {
+
+		} else if (v.equals(TOBButton)) {
 
 			if (hour == "" && minute == "") {
 				hour = new StringBuilder().append(
@@ -117,12 +127,33 @@ public class AddUserActivity extends Activity implements OnClickListener{
 			Log.e("Time Set are: ", "" + hour + ":" + minute);
 			new TimePickerDialog(this, timeSet, Integer.parseInt(hour),
 					Integer.parseInt(minute), true).show();
-		
-		}else {
-			
+
+		} else if (v.equals(addContact)) {
+			CustomToast.showToast(AddUserActivity.this, "This feature will be made available sooner");
+		} else {
+
 		}
 	}
-	
+
+	/**
+	 * To verify fields
+	 * **/
+	private boolean verifyFields() {
+		// TODO Auto-generated method stub
+		try {
+			if (uname.getText().toString() == ""
+					|| pwd.getText().toString() == "" || email == null
+					|| combinedDate == null || combinedTime == null) {
+				Log.e("Fields empty", "Check empty fields");
+				CustomToast.showToast(AddUserActivity.this, "Empty fields");
+			} else
+				return true;
+		} catch (Exception e) {
+			Log.e("Something empty", "" + e.getMessage());
+		}
+		return false;
+	}
+
 	/*****************************************************************************************************
 	 * For Date Picker Dialog
 	 * **************************************************************************************************/
@@ -144,9 +175,10 @@ public class AddUserActivity extends Activity implements OnClickListener{
 			} else
 				month = new StringBuilder().append(monthOfYear).toString();
 
-			combinedDate = (new StringBuilder()).append(Year)
-					.append("-").append(month).append("-").append(day)
-					.toString(); // combinedDate == yyyymmdd
+			combinedDate = (new StringBuilder()).append(Year).append("-")
+					.append(month).append("-").append(day).toString(); // combinedDate
+																		// ==
+																		// yyyymmdd
 
 			year = new StringBuilder().append(Year).toString();
 		}
@@ -170,10 +202,9 @@ public class AddUserActivity extends Activity implements OnClickListener{
 			else {
 				minute = new StringBuilder().append(min).toString();
 			}
-			combinedTime = (new StringBuilder()).append(hour)
-					.append(":").append(minute).toString(); // combinedTime ==
-															// HH:mm
-		
+			combinedTime = (new StringBuilder()).append(hour).append(":")
+					.append(minute).toString(); // combinedTime ==
+												// HH:mm
 
 		}
 	};

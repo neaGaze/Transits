@@ -328,7 +328,7 @@ public class MainActivity extends Activity implements B4AActivity {
 		mostCurrent._v5.Initialize(Common.File.getDirAssets(), "calendar.png");
 		mostCurrent._v6.Initialize(Common.File.getDirAssets(), "clock.png");
 		try {
-			// mostCurrent._v7.setObject((Typeface)(Common.Typeface.LoadFromAssets("HamburgSymbols.ttf")));
+			 mostCurrent._v7.setObject((Typeface)(Common.Typeface.LoadFromAssets("HamburgSymbols.ttf")));
 
 			mostCurrent._v7.setObject((Typeface) (Common.Typeface.DEFAULT));
 		} catch (Exception ex) {
@@ -986,7 +986,7 @@ public class MainActivity extends Activity implements B4AActivity {
 		;
 		_spacing = (int) (4);
 		if (mostCurrent._edittext1.getVisible() == Common.False) {
-			mostCurrent._vv1.DrawColor(Common.Colors.Black);
+			mostCurrent._vv1.DrawColor(Common.Colors.White);
 			mostCurrent._activity.Invalidate();
 			_center_pt_x = (int) (300);
 			_center_pt_y = (int) (452);

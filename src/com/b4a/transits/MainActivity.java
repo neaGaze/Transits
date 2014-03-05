@@ -308,12 +308,12 @@ public class MainActivity extends Activity implements B4AActivity {
 	public static double[] _vv4 = null;
 	public static double[] _vvv1 = null;
 
-	// public ButtonWrapper _btnchange = null;
-	// public ButtonWrapper _btndate = null;
+	 public ButtonWrapper _btnchange = null;
+	 public ButtonWrapper _btndate = null;
 	 public ButtonWrapper _btnhelp = null;
-	// public Button _btnprevious = null;
-	// public Button _btnnext = null;
-	// public Button _btnwheel_text = null;
+	 public Button _btnprevious = null;
+	 public Button _btnnext = null;
+	 public Button _btnwheel_text = null;
 	public ButtonWrapper _vvv3 = null;
 	public CanvasWrapper.BitmapWrapper _v5 = null;
 	public CanvasWrapper.BitmapWrapper _v6 = null;
@@ -397,9 +397,9 @@ public class MainActivity extends Activity implements B4AActivity {
 		mostCurrent._edittext1.setWrap(true);
 
 		if (_firsttime == false) {
-			// mostCurrent._btnprevious.setEnabled(true);
-			// mostCurrent._btnnext.setEnabled(true);
-			// mostCurrent._btnwheel_text.setEnabled(true);
+			 mostCurrent._btnprevious.setEnabled(true);
+			 mostCurrent._btnnext.setEnabled(true);
+			 mostCurrent._btnwheel_text.setEnabled(true);
 			mostCurrent._edittext1.setText(_last_interp_text);
 		}
 
@@ -623,10 +623,10 @@ public class MainActivity extends Activity implements B4AActivity {
 			_jd = _jd - (_tz_offset / (double) 24);
 			_current_jd = _jd;
 			_get_transit_interps_for_this_day(_current_jd);
-			// mostCurrent._btnprevious.setEnabled(true);
-			// mostCurrent._btnnext.setEnabled(true);
-			// mostCurrent._btnwheel_text.setEnabled(true);
-			// mostCurrent._btnwheel_text.setText("Wheel");
+			 mostCurrent._btnprevious.setEnabled(true);
+			 mostCurrent._btnnext.setEnabled(true);
+			 mostCurrent._btnwheel_text.setEnabled(true);
+			 mostCurrent._btnwheel_text.setText("Wheel");
 		} catch (Exception ex) {
 			Log.v("ERROR AT BTN_DATE_CLICK",
 					"Error found at: " + ex.getMessage());
@@ -640,7 +640,7 @@ public class MainActivity extends Activity implements B4AActivity {
 	public static String _btnhelp_click() throws Exception {
 		try {
 			mostCurrent._edittext1.setVisible(true);
-			// mostCurrent._btnwheel_text.setText("Wheel");
+			 mostCurrent._btnwheel_text.setText("Wheel");
 
 			if (_flag_help == 0) {
 				_flag_help = 1;
@@ -653,14 +653,14 @@ public class MainActivity extends Activity implements B4AActivity {
 				if (Common.File.Exists(Common.File.getDirAssets(), "help.txt") == true) {
 					mostCurrent._edittext1.setText(Common.File.ReadString(
 							Common.File.getDirAssets(), "help.txt"));
-					// mostCurrent._btnprevious.setEnabled(false);
-					// mostCurrent._btnnext.setEnabled(false);
+					 mostCurrent._btnprevious.setEnabled(false);
+					 mostCurrent._btnnext.setEnabled(false);
 				}
 			} else {
 
 				mostCurrent._edittext1.setText(_prev_text);
-				// mostCurrent._btnprevious.setEnabled(true);
-				// mostCurrent._btnnext.setEnabled(true);
+				 mostCurrent._btnprevious.setEnabled(true);
+				 mostCurrent._btnnext.setEnabled(true);
 
 			}
 
@@ -680,10 +680,10 @@ public class MainActivity extends Activity implements B4AActivity {
 
 		_current_jd = _current_jd + 1;
 		_get_transit_interps_for_this_day(_current_jd);
-		/*
-		 * if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
-		 * _display_wheel(); } ;
-		 */
+		
+		  if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
+		  _display_wheel(); } ;
+		 
 		return "";
 	}
 
@@ -697,21 +697,21 @@ public class MainActivity extends Activity implements B4AActivity {
 		_current_jd = _current_jd - 1;
 		_get_transit_interps_for_this_day(_current_jd);
 
-		/*
-		 * if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
-		 * _display_wheel(); }
-		 */
+		
+		  if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
+		  _display_wheel(); }
+		 
 		return "";
 	}
 
-	/*
-	 * public static String _btnwheel_text_click() throws Exception { if
-	 * ((mostCurrent._btnwheel_text.getText()).equals("Wheel")) {
-	 * mostCurrent._edittext1.setVisible(Common.False);
-	 * mostCurrent._btnwheel_text.setText("Text"); _display_wheel(); } else {
-	 * mostCurrent._edittext1.setVisible(Common.True);
-	 * mostCurrent._btnwheel_text.setText("Wheel"); } ; return ""; }
-	 */
+	
+	  public static String _btnwheel_text_click() throws Exception { if
+	  ((mostCurrent._btnwheel_text.getText()).equals("Wheel")) {
+	  mostCurrent._edittext1.setVisible(Common.False);
+	  mostCurrent._btnwheel_text.setText("Text"); _display_wheel(); } else {
+	  mostCurrent._edittext1.setVisible(Common.True);
+	  mostCurrent._btnwheel_text.setText("Wheel"); } ; return ""; }
+	 
 
 	public static boolean _check_for_overlap(float _angle, int _spacing)
 			throws Exception {
@@ -1970,12 +1970,12 @@ public class MainActivity extends Activity implements B4AActivity {
 	}
 
 	public static String _globals() throws Exception {
-		// mostCurrent._btnchange = new ButtonWrapper();
-		// mostCurrent._btndate = new ButtonWrapper();
+		 mostCurrent._btnchange = new ButtonWrapper();
+		 mostCurrent._btndate = new ButtonWrapper();
 		 mostCurrent._btnhelp = new ButtonWrapper();
-		// mostCurrent._btnprevious = new Button(mostCurrent);
-		// mostCurrent._btnnext = new Button(mostCurrent);
-		// mostCurrent._btnwheel_text = new Button(mostCurrent);
+		 mostCurrent._btnprevious = new Button(mostCurrent);
+		 mostCurrent._btnnext = new Button(mostCurrent);
+		 mostCurrent._btnwheel_text = new Button(mostCurrent);
 		mostCurrent._vvv3 = new ButtonWrapper();
 		mostCurrent._v5 = new BitmapWrapper();
 		mostCurrent._v6 = new BitmapWrapper();

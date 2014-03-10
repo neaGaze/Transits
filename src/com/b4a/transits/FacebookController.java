@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
-
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -18,14 +17,22 @@ import com.parse.SaveCallback;
 
 public class FacebookController {
 
-	public static void linkFacebook(Context context, final ParseUser parseUser) {
+	private static Context context;
+
+	public FacebookController(Context context) {
+		FacebookController.context = context;
+	}
+
+	/**
+	 * Link facebook with the existing ParseUser
+	 * **/
+	public void linkFacebook(final ParseUser parseUser) {
 
 		if (!ParseFacebookUtils.isLinked(parseUser)) {
 
 			ParseFacebookUtils.link(parseUser, Arrays.asList("email"),
 					(Activity) context, new SaveCallback() {
 
-						@SuppressWarnings("deprecation")
 						@Override
 						public void done(ParseException ex) {
 
@@ -37,22 +44,8 @@ public class FacebookController {
 											"Woohoo, user logged in with Facebook!"
 													+ parseUser.getUsername());
 
-									// parseUser.put("birthDate", );
-									Request.executeMeRequestAsync(
-											Session.getActiveSession(),
-											new Request.GraphUserCallback() {
-
-												@Override
-												public void onCompleted(
-														GraphUser user,
-														Response response) {
-													// TODO Auto-generated
-													// method stub
-													Log.v("BIRTHDAY",
-															user.getBirthday());
-												}
-
-											});
+									// Transfer FB info into Parse info
+									performAdditionalFBOperation();
 
 								} else {
 									Log.e("ParseUser is still not linked with Facebook",
@@ -66,15 +59,17 @@ public class FacebookController {
 					});
 		} else {
 			Log.v("Facebook is linked", "ParseUser linked with facebook id: ");
+
+			performAdditionalFBOperation();
 		}
 
-		if (parseUser.get("authData") == null) {
-			performAdditionalFBOperation(context);
-		}
 	}
 
+	/**
+	 * Import data from facebook into ParseUser a/c and save in sharedPrefs
+	 * **/
 	@SuppressWarnings("deprecation")
-	protected static void performAdditionalFBOperation(final Context context) {
+	protected static void performAdditionalFBOperation() {
 		// TODO Auto-generated method stub
 		Request.executeMeRequestAsync(ParseFacebookUtils.getSession(),
 				new Request.GraphUserCallback() {
@@ -84,18 +79,35 @@ public class FacebookController {
 						// TODO Auto-generated method stub
 
 						if (user != null) {
+
+							String accessToken = Session.getActiveSession()
+									.getAccessToken();
+
+							ParseUser.getCurrentUser().put("fbAccessToken",
+									accessToken);
+
 							ParseUser.getCurrentUser().put("username",
 									user.getFirstName());
 
 							ParseUser.getCurrentUser().put("birthDate",
 									user.getBirthday());
 
-							ParseUser.getCurrentUser().put("email",
-									user.getUsername());
+							ParseUser.getCurrentUser().put("fbuid",
+									user.getId());
 
-							ParseUser.getCurrentUser().saveInBackground();
-							Log.v("BIRTHDAY", "" + user.getBirthday());
-							
+							try {
+
+								ParseUser.getCurrentUser().save();
+
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								Log.e("ParseException @FacebookController/lineNo-104",
+										"" + e.getMessage());
+							}
+							Log.v("fbAccessToken", "" + accessToken);
+
+							// Save in sharedPrefs
 							Editor saveEditor = context.getSharedPreferences(
 									"TransitPref", Context.MODE_PRIVATE).edit();
 							saveEditor.putString("uname", user.getFirstName());
@@ -103,9 +115,12 @@ public class FacebookController {
 																// as login mode
 																// which is 3
 							saveEditor.commit();
+						} else {
+							Log.v("GraphUser returned null",
+									"No graph user found");
 						}
-
 					}
 				});
 	}
+
 }

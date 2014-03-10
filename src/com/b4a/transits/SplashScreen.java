@@ -130,8 +130,7 @@ public class SplashScreen extends Activity {
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
-			// After completing http call
-			// will close this activity and lauch main activity
+
 			Log.d("RESULT", "" + result);
 			if (result == UNREGISTERED || result == ANONYMOUS) {
 				Intent i = new Intent(SplashScreen.this, SignUpActivity.class);

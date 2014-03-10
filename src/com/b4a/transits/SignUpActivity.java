@@ -56,9 +56,10 @@ public class SignUpActivity extends Activity implements OnClickListener {
 			// Intent intent = new Intent(this, FacebookActivity.class);
 			// startActivity(intent);
 
-			FacebookController.linkFacebook(this, ParseUser.getCurrentUser());
+			FacebookController facebookController = new FacebookController(this);
+			facebookController.linkFacebook(ParseUser.getCurrentUser());
 
-		//	finish();
+			// finish();
 		} else if (v == anonymousButton) {
 			Intent i = new Intent(this, MainActivity.class);
 			i.putExtra("uname", "");

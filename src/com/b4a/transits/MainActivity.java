@@ -308,12 +308,12 @@ public class MainActivity extends Activity implements B4AActivity {
 	public static double[] _vv4 = null;
 	public static double[] _vvv1 = null;
 
-	 public ButtonWrapper _btnchange = null;
-	 public ButtonWrapper _btndate = null;
-	 public ButtonWrapper _btnhelp = null;
-	 public Button _btnprevious = null;
-	 public Button _btnnext = null;
-	 public Button _btnwheel_text = null;
+	public ButtonWrapper _btnchange = null;
+	public ButtonWrapper _btndate = null;
+	public ButtonWrapper _btnhelp = null;
+	public Button _btnprevious = null;
+	public Button _btnnext = null;
+	public Button _btnwheel_text = null;
 	public ButtonWrapper _vvv3 = null;
 	public CanvasWrapper.BitmapWrapper _v5 = null;
 	public CanvasWrapper.BitmapWrapper _v6 = null;
@@ -328,7 +328,8 @@ public class MainActivity extends Activity implements B4AActivity {
 		mostCurrent._v5.Initialize(Common.File.getDirAssets(), "calendar.png");
 		mostCurrent._v6.Initialize(Common.File.getDirAssets(), "clock.png");
 		try {
-			 mostCurrent._v7.setObject((Typeface)(Common.Typeface.LoadFromAssets("HamburgSymbols.ttf")));
+			mostCurrent._v7.setObject((Typeface) (Common.Typeface
+					.LoadFromAssets("HamburgSymbols.ttf")));
 
 			mostCurrent._v7.setObject((Typeface) (Common.Typeface.DEFAULT));
 		} catch (Exception ex) {
@@ -395,18 +396,21 @@ public class MainActivity extends Activity implements B4AActivity {
 		mostCurrent._edittext1.setInputType(EditTextWrapper.INPUT_TYPE_NONE);
 		mostCurrent._edittext1.setSingleLine(false);
 		mostCurrent._edittext1.setWrap(true);
+		mostCurrent._edittext1.setColor(Color.WHITE);
+		mostCurrent._btnchange.setColor(Color.WHITE);
+		mostCurrent._btndate.setColor(Color.WHITE);
+		mostCurrent._btnhelp.setColor(Color.WHITE);
 
 		if (_firsttime == false) {
-			 mostCurrent._btnprevious.setEnabled(true);
-			 mostCurrent._btnnext.setEnabled(true);
-			 mostCurrent._btnwheel_text.setEnabled(true);
+			mostCurrent._btnprevious.setEnabled(true);
+			mostCurrent._btnnext.setEnabled(true);
+			mostCurrent._btnwheel_text.setEnabled(true);
 			mostCurrent._edittext1.setText(_last_interp_text);
 		}
 
-
 		mostCurrent.registerForContextMenu(mostCurrent._btnhelp.getObject());
 		return "";
-		
+
 	}
 
 	public static String _btnchange_click() throws Exception {
@@ -471,7 +475,6 @@ public class MainActivity extends Activity implements B4AActivity {
 						mostCurrent.activityBA,
 						(Bitmap) (mostCurrent._v6.getObject())));
 			}
-			;
 
 			_m = _dd.getMonth();
 			_d = _dd.getDayOfMonth();
@@ -623,10 +626,10 @@ public class MainActivity extends Activity implements B4AActivity {
 			_jd = _jd - (_tz_offset / (double) 24);
 			_current_jd = _jd;
 			_get_transit_interps_for_this_day(_current_jd);
-			 mostCurrent._btnprevious.setEnabled(true);
-			 mostCurrent._btnnext.setEnabled(true);
-			 mostCurrent._btnwheel_text.setEnabled(true);
-			 mostCurrent._btnwheel_text.setText("Wheel");
+			mostCurrent._btnprevious.setEnabled(true);
+			mostCurrent._btnnext.setEnabled(true);
+			mostCurrent._btnwheel_text.setEnabled(true);
+			mostCurrent._btnwheel_text.setText("Wheel");
 		} catch (Exception ex) {
 			Log.v("ERROR AT BTN_DATE_CLICK",
 					"Error found at: " + ex.getMessage());
@@ -640,7 +643,7 @@ public class MainActivity extends Activity implements B4AActivity {
 	public static String _btnhelp_click() throws Exception {
 		try {
 			mostCurrent._edittext1.setVisible(true);
-			 mostCurrent._btnwheel_text.setText("Wheel");
+			mostCurrent._btnwheel_text.setText("Wheel");
 
 			if (_flag_help == 0) {
 				_flag_help = 1;
@@ -653,14 +656,14 @@ public class MainActivity extends Activity implements B4AActivity {
 				if (Common.File.Exists(Common.File.getDirAssets(), "help.txt") == true) {
 					mostCurrent._edittext1.setText(Common.File.ReadString(
 							Common.File.getDirAssets(), "help.txt"));
-					 mostCurrent._btnprevious.setEnabled(false);
-					 mostCurrent._btnnext.setEnabled(false);
+					mostCurrent._btnprevious.setEnabled(false);
+					mostCurrent._btnnext.setEnabled(false);
 				}
 			} else {
 
 				mostCurrent._edittext1.setText(_prev_text);
-				 mostCurrent._btnprevious.setEnabled(true);
-				 mostCurrent._btnnext.setEnabled(true);
+				mostCurrent._btnprevious.setEnabled(true);
+				mostCurrent._btnnext.setEnabled(true);
 
 			}
 
@@ -680,10 +683,12 @@ public class MainActivity extends Activity implements B4AActivity {
 
 		_current_jd = _current_jd + 1;
 		_get_transit_interps_for_this_day(_current_jd);
-		
-		  if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
-		  _display_wheel(); } ;
-		 
+
+		if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
+			_display_wheel();
+		}
+		;
+
 		return "";
 	}
 
@@ -697,21 +702,25 @@ public class MainActivity extends Activity implements B4AActivity {
 		_current_jd = _current_jd - 1;
 		_get_transit_interps_for_this_day(_current_jd);
 
-		
-		  if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
-		  _display_wheel(); }
-		 
+		if ((mostCurrent._btnwheel_text.getText()).equals("Text")) {
+			_display_wheel();
+		}
+
 		return "";
 	}
 
-	
-	  public static String _btnwheel_text_click() throws Exception { if
-	  ((mostCurrent._btnwheel_text.getText()).equals("Wheel")) {
-	  mostCurrent._edittext1.setVisible(Common.False);
-	  mostCurrent._btnwheel_text.setText("Text"); _display_wheel(); } else {
-	  mostCurrent._edittext1.setVisible(Common.True);
-	  mostCurrent._btnwheel_text.setText("Wheel"); } ; return ""; }
-	 
+	public static String _btnwheel_text_click() throws Exception {
+		if ((mostCurrent._btnwheel_text.getText()).equals("Wheel")) {
+			mostCurrent._edittext1.setVisible(Common.False);
+			mostCurrent._btnwheel_text.setText("Text");
+			_display_wheel();
+		} else {
+			mostCurrent._edittext1.setVisible(Common.True);
+			mostCurrent._btnwheel_text.setText("Wheel");
+		}
+		;
+		return "";
+	}
 
 	public static boolean _check_for_overlap(float _angle, int _spacing)
 			throws Exception {
@@ -975,7 +984,6 @@ public class MainActivity extends Activity implements B4AActivity {
 			if (true)
 				return "";
 		}
-		;
 
 		if (_vv4[(int) (0)] == 0 && _vv4[(int) (1)] == 0
 				&& _vvv1[(int) (0)] == 0 && _vvv1[(int) (1)] == 0
@@ -983,7 +991,6 @@ public class MainActivity extends Activity implements B4AActivity {
 			if (true)
 				return "";
 		}
-		;
 		_spacing = (int) (4);
 		if (mostCurrent._edittext1.getVisible() == Common.False) {
 			mostCurrent._vv1.DrawColor(Common.Colors.White);
@@ -1035,7 +1042,6 @@ public class MainActivity extends Activity implements B4AActivity {
 							(float) (Common.DipToCurrent(1)));
 				}
 			}
-			;
 
 			mostCurrent._vv1.DrawCircle((float) (_center_pt_x),
 					(float) (_center_pt_y), (float) (_radius),
@@ -1076,7 +1082,6 @@ public class MainActivity extends Activity implements B4AActivity {
 											"LEFT"));
 				}
 			}
-			;
 
 			{
 				final double step278 = 1, limit278 = 1;
@@ -1131,7 +1136,6 @@ public class MainActivity extends Activity implements B4AActivity {
 							_nopih[_i] = (int) (0);
 						}
 					}
-					;
 
 					{
 						final double step302 = 1, limit302 = (int) (9);
@@ -1148,7 +1152,7 @@ public class MainActivity extends Activity implements B4AActivity {
 							_nopih[(int) (_temp)] = (int) (_nopih[(int) (_temp)] + 1);
 						}
 					}
-					;
+
 					{
 						final double step310 = -1, limit310 = 0;
 						for (_i = 8; (step310 > 0 && _i <= limit310)
@@ -1169,12 +1173,9 @@ public class MainActivity extends Activity implements B4AActivity {
 									if (true)
 										break;
 								}
-								;
 							}
-							;
 						}
 					}
-					;
 
 					if (_i >= 0) {
 						_cnt = 9;
@@ -1188,7 +1189,6 @@ public class MainActivity extends Activity implements B4AActivity {
 								_cnt = (int) (_cnt - 1);
 							}
 						}
-						;
 
 						{
 							final double step332 = -1, limit332 = (int) (_start_planet_idx + 1);
@@ -1199,7 +1199,6 @@ public class MainActivity extends Activity implements B4AActivity {
 								_cnt = (int) (_cnt - 1);
 							}
 						}
-						;
 
 						{
 							final double step337 = 1, limit337 = 9;
@@ -1209,9 +1208,7 @@ public class MainActivity extends Activity implements B4AActivity {
 								_sort[_i] = _s[_i];
 							}
 						}
-						;
 					}
-					;
 
 					{
 						final double step342 = 1;
@@ -1222,7 +1219,6 @@ public class MainActivity extends Activity implements B4AActivity {
 							_spot_filled[_i] = 0;
 						}
 					}
-					;
 
 					_house_num = 0;
 
@@ -1243,12 +1239,11 @@ public class MainActivity extends Activity implements B4AActivity {
 												/ (double) 30) + 1);
 								_offset_distance = 12;
 							}
-							;
 
 							if (_temp != _house_num) {
 								_planets_done = 1;
 							}
-							;
+
 							_from_cusp = _vv6(_sort[_i]
 									- ((_house_num - 1) * 30));
 							_to_next_cusp = _vv6((_house_num * 30) - _sort[_i]);
@@ -1261,7 +1256,7 @@ public class MainActivity extends Activity implements B4AActivity {
 								_angle = _vv6(_next_cusp
 										- ((_nopih[_house_num] - _planets_done + 1) * (_spacing + 1)));
 							}
-							;
+
 							while (_check_for_overlap((float) (_angle),
 									_spacing) == Common.True) {
 								_angle = _vv6(_angle + 1);
@@ -1307,13 +1302,10 @@ public class MainActivity extends Activity implements B4AActivity {
 														android.graphics.Paint.Align.class,
 														"LEFT"));
 							}
-							;
 						}
 					}
-					;
 				}
 			}
-			;
 
 			{
 				final double step381 = 1, limit381 = 5;
@@ -1362,17 +1354,12 @@ public class MainActivity extends Activity implements B4AActivity {
 											(float) (Common
 													.DipToCurrent((int) (4))));
 								}
-								;
 							}
-							;
 						}
 					}
-					;
 				}
 			}
-			;
 		}
-		;
 		return "";
 	}
 
@@ -1390,14 +1377,12 @@ public class MainActivity extends Activity implements B4AActivity {
 			if (true)
 				return "";
 		}
-		;
 		_txt = Common.File.ReadString(Common.File.getDirAssets(), _filename);
 		_x = _txt.indexOf(_phrase_to_look_for);
 		if (_x == -1) {
 			if (true)
 				return "";
 		}
-		;
 		_y = _txt.indexOf("*", _x);
 		_n = (int) (_y - _x - 1);
 		if (true)
@@ -1423,7 +1408,7 @@ public class MainActivity extends Activity implements B4AActivity {
 				_serr.Append("0");
 			}
 		}
-		;
+
 		_iflag = (int) (2 + 256);
 		_ret_flag = _vvv2.swe_calc_ut(_jd, _p_num, _iflag, _xx,
 				(java.lang.StringBuilder) (_serr.getObject()));
@@ -1457,7 +1442,6 @@ public class MainActivity extends Activity implements B4AActivity {
 								(int) (4), Common.False) + Common.CRLF;
 			}
 		}
-		;
 
 		if (mostCurrent._chkdebug.getChecked() == Common.True) {
 			mostCurrent._edittext1
@@ -1468,7 +1452,6 @@ public class MainActivity extends Activity implements B4AActivity {
 			mostCurrent._edittext1.setText((Object) (_transit_data_header
 					+ Common.CRLF + _natal_data_header + Common.CRLF));
 		}
-		;
 
 		_orb = 2.0;
 		_any_text = "";
@@ -1481,7 +1464,6 @@ public class MainActivity extends Activity implements B4AActivity {
 					if (true)
 						continue;
 				}
-				;
 				{
 					final double step609 = 1;
 					final double limit609 = (int) (9);
@@ -1495,7 +1477,6 @@ public class MainActivity extends Activity implements B4AActivity {
 							_da = BA.NumberToString(360 - (double) (Double
 									.parseDouble(_da)));
 						}
-						;
 						_q = 1;
 						if ((double) (Double.parseDouble(_da)) <= _orb) {
 							_q = 2;
@@ -1511,7 +1492,6 @@ public class MainActivity extends Activity implements B4AActivity {
 						} else if ((double) (Double.parseDouble(_da)) >= 180 - _orb) {
 							_q = 6;
 						}
-						;
 
 						if (_q > 1) {
 							_aspect_present[_i][_j] = _q;
@@ -1525,13 +1505,10 @@ public class MainActivity extends Activity implements B4AActivity {
 									.setText((Object) (mostCurrent._edittext1
 											.getText() + _txt + Common.CRLF));
 						}
-						;
 					}
 				}
-				;
 			}
 		}
-		;
 
 		if ((_any_text).equals("")) {
 			mostCurrent._edittext1
@@ -1539,7 +1516,6 @@ public class MainActivity extends Activity implements B4AActivity {
 							+ Common.CRLF
 							+ "You have no transits active at this time." + Common.CRLF));
 		}
-		;
 		_last_interp_text = mostCurrent._edittext1.getText();
 		return "";
 	}
@@ -1577,71 +1553,54 @@ public class MainActivity extends Activity implements B4AActivity {
 		if (_current_tz == -12) {
 			_idx = (int) (0);
 		}
-		;
 		if (_current_tz == -11) {
 			_idx = (int) (1);
 		}
-		;
 		if (_current_tz == -10.5) {
 			_idx = (int) (2);
 		}
-		;
 		if (_current_tz == -10) {
 			_idx = (int) (3);
 		}
-		;
 		if (_current_tz == -9.5) {
 			_idx = (int) (4);
 		}
-		;
 		if (_current_tz == -9) {
 			_idx = (int) (5);
 		}
-		;
 		if (_current_tz == -8) {
 			_idx = (int) (6);
 		}
-		;
 		if (_current_tz == -7) {
 			_idx = (int) (7);
 		}
-		;
 		if (_current_tz == -6) {
 			_idx = (int) (8);
 		}
-		;
 		if (_current_tz == -5) {
 			_idx = (int) (9);
 		}
-		;
 		if (_current_tz == -4) {
 			_idx = (int) (10);
 		}
-		;
 		if (_current_tz == -3.5) {
 			_idx = (int) (11);
 		}
-		;
 		if (_current_tz == -3) {
 			_idx = (int) (12);
 		}
-		;
 		if (_current_tz == -2) {
 			_idx = (int) (13);
 		}
-		;
 		if (_current_tz == -1) {
 			_idx = (int) (14);
 		}
-		;
 		if (_current_tz == 0) {
 			_idx = (int) (15);
 		}
-		;
 		if (_current_tz == 1) {
 			_idx = (int) (16);
 		}
-		;
 		if (_current_tz == 2) {
 			_idx = (int) (17);
 		}
@@ -1970,12 +1929,12 @@ public class MainActivity extends Activity implements B4AActivity {
 	}
 
 	public static String _globals() throws Exception {
-		 mostCurrent._btnchange = new ButtonWrapper();
-		 mostCurrent._btndate = new ButtonWrapper();
-		 mostCurrent._btnhelp = new ButtonWrapper();
-		 mostCurrent._btnprevious = new Button(mostCurrent);
-		 mostCurrent._btnnext = new Button(mostCurrent);
-		 mostCurrent._btnwheel_text = new Button(mostCurrent);
+		mostCurrent._btnchange = new ButtonWrapper();
+		mostCurrent._btndate = new ButtonWrapper();
+		mostCurrent._btnhelp = new ButtonWrapper();
+		mostCurrent._btnprevious = new Button(mostCurrent);
+		mostCurrent._btnnext = new Button(mostCurrent);
+		mostCurrent._btnwheel_text = new Button(mostCurrent);
 		mostCurrent._vvv3 = new ButtonWrapper();
 		mostCurrent._v5 = new BitmapWrapper();
 		mostCurrent._v6 = new BitmapWrapper();
@@ -2149,7 +2108,7 @@ public class MainActivity extends Activity implements B4AActivity {
 			gotoSignUpPage();
 			return true;
 		}
-		
+
 		default:
 			return super.onContextItemSelected(item);
 		}

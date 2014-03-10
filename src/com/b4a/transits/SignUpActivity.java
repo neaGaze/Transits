@@ -1,6 +1,7 @@
 package com.b4a.transits;
 
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import android.os.Bundle;
@@ -52,9 +53,12 @@ public class SignUpActivity extends Activity implements OnClickListener {
 		if (v == parseButton) {
 			handleParse();
 		} else if (v == facebookButton) {
-			Intent intent = new Intent(this, FacebookActivity.class);
-			startActivity(intent);
-			finish();
+			// Intent intent = new Intent(this, FacebookActivity.class);
+			// startActivity(intent);
+
+			FacebookController.linkFacebook(this, ParseUser.getCurrentUser());
+
+		//	finish();
 		} else if (v == anonymousButton) {
 			Intent i = new Intent(this, MainActivity.class);
 			i.putExtra("uname", "");

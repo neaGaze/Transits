@@ -1,25 +1,17 @@
 package com.b4a.transits;
 
 import java.util.HashMap;
-
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences.Editor;
-import android.database.CursorJoiner.Result;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-
 import com.parse.FunctionCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseACL;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -162,7 +154,7 @@ public class ParseController {
 	/**
 	 * Save user data in installation
 	 * **/
-	public static void saveInInstallation(ParseUser user, final Context context) {
+	public static void saveInInstallation(ParseUser user, final Context context, final int loginMode) {
 		ParseInstallation inst = ParseController.getCurrentInstallation();
 		inst.put("user", user);
 		inst.setACL(new ParseACL(user));
@@ -176,7 +168,7 @@ public class ParseController {
 					Editor saveEditor = context.getSharedPreferences(
 							"TransitPref", Context.MODE_PRIVATE).edit();
 					// To indicate that the user is anonymous already
-					saveEditor.putInt("anonymous", 1);
+					saveEditor.putInt("anonymous", loginMode);
 					saveEditor.commit();
 				} else {
 					Log.e("ParseException @ saveInInstallation",

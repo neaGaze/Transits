@@ -4,15 +4,12 @@ import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.view.Menu;
 
@@ -82,6 +79,9 @@ public class SplashScreen extends Activity {
 			else
 				anonymous = UNREGISTERED;
 
+			Log.v("LOGIN MODE", "" + anonymous);
+			anonymous = ANONYMOUS;
+
 			/** Check what kind of login is this **/
 			if (anonymous == PARSE) {
 				try {
@@ -109,8 +109,9 @@ public class SplashScreen extends Activity {
 							// TODO Auto-generated method stub
 							if (ex == null) {
 								Log.d("Anonymous Login", "ANONYMOUS !!");
+
 								ParseController.saveInInstallation(parseUser,
-										SplashScreen.this);
+										SplashScreen.this, ANONYMOUS);
 							} else
 								Log.e("ParseException  @ Anonymous login", ""
 										+ ex.getMessage());

@@ -16,32 +16,31 @@
 
     <Button
         android:id="@+id/buttonParse"
-        style="?android:attr/buttonStyleSmall"
+        style="?android:attr/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="22dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"
         android:text="Login with Parse" />
 
-    <Button
+    <com.facebook.widget.LoginButton
         android:id="@+id/buttonFacebook"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonParse"
-        android:layout_alignBottom="@+id/buttonParse"
-        android:layout_alignParentRight="true"
-        android:text="Login using Facebook" />
-
-    <Button
-        android:id="@+id/buttonAnonymous"
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonParse"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="45dp"
+        android:text="Facebook Login" />
+
+    <Button
+        android:id="@+id/buttonAnonymous"
+        style="?android:attr/buttonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonFacebook"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp"
         android:text="Continue as Anonymous" />
 
 </RelativeLayout>

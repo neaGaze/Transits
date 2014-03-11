@@ -1,12 +1,8 @@
 package com.b4a.transits;
 
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseUser;
-
 import android.os.Bundle;
-import android.renderscript.Element;
-import android.R.integer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -98,8 +94,9 @@ public class SignUpActivity extends Activity implements OnClickListener {
 
 			if (Connection.getConnectionAvailable(SignUpActivity.this)) {
 
-				ProgressDialog pDialog = new ProgressDialog(SignUpActivity.this);
-				pDialog.show(this, "Signing Up", "Signing in progress");
+				final ProgressDialog pDialog = ProgressDialog.show(this,
+						"Signing Up", "Signing in progress");
+
 				try {
 					ParseController.createUserSynchronized(this, uname, pwd,
 							DOB, email, phone);
@@ -111,7 +108,15 @@ public class SignUpActivity extends Activity implements OnClickListener {
 					CustomToast.showToast(this, "Something went wrong :(");
 				}
 
-				pDialog.dismiss();
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+
+						pDialog.dismiss();
+					}
+				});
 
 				Intent i = new Intent(SignUpActivity.this, MainActivity.class);
 				i.putExtra("uname", uname);

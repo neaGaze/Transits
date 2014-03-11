@@ -35,7 +35,8 @@ public class ContactList {
 		JSONArray contactsListArray = new JSONArray();
 
 		if (cur.getCount() > 0) {
-int count = 0;
+
+			int count = 0;
 			while (cur.moveToNext()) {
 
 				String id = cur.getString(cur
@@ -48,7 +49,9 @@ int count = 0;
 				ParseObject contact = new ParseObject("Contacts");
 
 				contact.put("firstName", name);
+				contact.put("userId", id);
 
+				// For phone Numbers
 				if (Integer
 						.parseInt(cur.getString(cur
 								.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
@@ -77,9 +80,94 @@ int count = 0;
 
 					contact.put("phoneNumber", phoneArray);
 				}
+
+				// For Notes
+				String noteWhere = ContactsContract.Data.CONTACT_ID
+						+ " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+				String[] noteWhereParams = new String[] { id,
+						ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE };
+				Cursor noteCur = cr.query(ContactsContract.Data.CONTENT_URI,
+						null, noteWhere, noteWhereParams, null);
+				if (noteCur.moveToFirst()) {
+					String note = noteCur
+							.getString(noteCur
+									.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE));
+					contact.put("note", note);
+				}
+				noteCur.close();
+
+				// For email
+				Cursor emailCur = cr.query(
+						ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+						null, ContactsContract.CommonDataKinds.Email.CONTACT_ID
+								+ " = ?", new String[] { id }, null);
+
+				JSONArray emailArray = new JSONArray();
+
+				while (emailCur.moveToNext()) {
+
+					String email = emailCur
+							.getString(emailCur
+									.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+					String emailType = emailCur
+							.getString(emailCur
+									.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE));
+					emailArray.put(email);
+				}
+				emailCur.close();
+				contact.put("email", emailArray);
+
+				// For IM
+				String imWhere = ContactsContract.Data.CONTACT_ID + " = ? AND "
+						+ ContactsContract.Data.MIMETYPE + " = ?";
+				String[] imWhereParams = new String[] { id,
+						ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE };
+
+				JSONArray imArray = new JSONArray();
+
+				Cursor imCur = cr.query(ContactsContract.Data.CONTENT_URI,
+						null, imWhere, imWhereParams, null);
+
+				if (imCur.moveToFirst()) {
+
+					String imName = imCur
+							.getString(imCur
+									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA));
+					String imType;
+					imType = imCur
+							.getString(imCur
+									.getColumnIndex(ContactsContract.CommonDataKinds.Im.TYPE));
+					imArray.put(imName);
+				}
+				imCur.close();
+				contact.put("IM", imArray);
+
+				// For organization
+				String orgWhere = ContactsContract.Data.CONTACT_ID
+						+ " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+				String[] orgWhereParams = new String[] {
+						id,
+						ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE };
+				Cursor orgCur = cr.query(ContactsContract.Data.CONTENT_URI,
+						null, orgWhere, orgWhereParams, null);
+				JSONArray orgArray = new JSONArray();
+
+				if (orgCur.moveToFirst()) {
+
+					String orgName = orgCur
+							.getString(orgCur
+									.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DATA));
+					String title = orgCur
+							.getString(orgCur
+									.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
+					orgArray.put(orgName);
+				}
+				orgCur.close();
+				contact.put("organization", orgArray);
+
 				contactsListArray.put(contact);
-				
-				if(++count > 1)
+
+				if (++count > 200)
 					break;
 			}
 

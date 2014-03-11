@@ -47,7 +47,7 @@ public class ParseController {
 		user.setEmail(email);
 		user.put("birthDate", birthDate);
 		user.put("phone", phone);
-		
+
 		user.signUpInBackground(new SignUpCallback() {
 
 			@Override
@@ -73,8 +73,9 @@ public class ParseController {
 		});
 	}
 
-	public static void createUserSynchronized(final Context context, final String uname,
-			final String pwd, String birthDate, String email, String phone) {
+	public static void createUserSynchronized(final Context context,
+			final String uname, final String pwd, String birthDate,
+			String email, String phone) {
 
 		ParseUser user = ParseUser.getCurrentUser();
 		user.setUsername(uname);
@@ -82,18 +83,18 @@ public class ParseController {
 		user.setEmail(email);
 		user.put("birthDate", birthDate);
 		user.put("phone", phone);
-		
+
 		try {
 			user.signUp();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Log.d("Created New User", "Look at the parse.com !!!");
 
-		Editor saveEditor = context.getSharedPreferences(
-				"TransitPref", Context.MODE_PRIVATE).edit();
+		Editor saveEditor = context.getSharedPreferences("TransitPref",
+				Context.MODE_PRIVATE).edit();
 		// To indicate that the user is a registered user now
 		saveEditor.putString("uname", uname);
 		saveEditor.putString("pwd", pwd);
@@ -102,7 +103,7 @@ public class ParseController {
 
 		CustomToast.showToast(context, "User Create >> Success!!");
 	}
-	
+
 	/**
 	 * For loggin in
 	 ***/
@@ -154,10 +155,28 @@ public class ParseController {
 	/**
 	 * Save user data in installation
 	 * **/
-	public static void saveInInstallation(ParseUser user, final Context context, final int loginMode) {
+
+	public static boolean saveInInstallation(ParseUser user,
+			final Context context, final int loginMode) {
 		ParseInstallation inst = ParseController.getCurrentInstallation();
 		inst.put("user", user);
 		inst.setACL(new ParseACL(user));
+
+		try {
+			inst.save();
+			Editor saveEditor = context.getSharedPreferences("TransitPref",
+					Context.MODE_PRIVATE).edit();
+			// To indicate that the user is anonymous already
+			saveEditor.putInt("anonymous", loginMode);
+			saveEditor.commit();
+			return true;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		return false;
+	/*	
 		inst.saveInBackground(new SaveCallback() {
 
 			@Override
@@ -177,7 +196,7 @@ public class ParseController {
 
 				}
 			}
-		});
+		});  */
 	}
 
 	/**

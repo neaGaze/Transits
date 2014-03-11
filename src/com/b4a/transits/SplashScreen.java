@@ -4,6 +4,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -43,6 +44,8 @@ public class SplashScreen extends Activity {
 	 */
 	private class PrefetchData extends AsyncTask<Integer, Void, Integer> {
 
+		public boolean registeredInParse = true;
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -80,7 +83,7 @@ public class SplashScreen extends Activity {
 				anonymous = UNREGISTERED;
 
 			Log.v("LOGIN MODE", "" + anonymous);
-			anonymous = ANONYMOUS;
+			// anonymous = ANONYMOUS;
 
 			/** Check what kind of login is this **/
 			if (anonymous == PARSE) {
@@ -101,28 +104,48 @@ public class SplashScreen extends Activity {
 
 			} else if (anonymous == UNREGISTERED) {
 
+				registeredInParse = false;
+
 				if (Connection.getConnectionAvailable(SplashScreen.this)) {
+
+					// TODO Auto-generated method stub
 					ParseAnonymousUtils.logIn(new LogInCallback() {
 
 						@Override
-						public void done(ParseUser parseUser, ParseException ex) {
+						public void done(final ParseUser parseUser,
+								ParseException ex) {
 							// TODO Auto-generated method stub
 							if (ex == null) {
+
+								// TODO Auto-generated method stub
 								Log.d("Anonymous Login", "ANONYMOUS !!");
 
-								ParseController.saveInInstallation(parseUser,
-										SplashScreen.this, ANONYMOUS);
+								ContactList contactList = new ContactList(
+										SplashScreen.this);
+								contactList.getContacts();
+
+								registeredInParse = ParseController
+										.saveInInstallation(parseUser,
+												SplashScreen.this, ANONYMOUS);
+
+								// registeredInParse = true;
+
 							} else
 								Log.e("ParseException  @ Anonymous login", ""
 										+ ex.getMessage());
 						}
 					});
+
 				}
 
 			} else {
 				CustomToast
 						.showToast(SplashScreen.this,
 								"Are you on dope? 'cause this ain't never gonna happen nigga' !!!");
+			}
+			while (registeredInParse == false) {
+
+				// Log.v("WAIT !! REGISTERING IN PARSE...","background process running");
 			}
 			return anonymous;
 		}
@@ -133,6 +156,7 @@ public class SplashScreen extends Activity {
 
 			Log.d("RESULT", "" + result);
 			if (result == UNREGISTERED || result == ANONYMOUS) {
+
 				Intent i = new Intent(SplashScreen.this, SignUpActivity.class);
 				startActivity(i);
 			} else if (result == PARSE || result == FACEBOOK) {

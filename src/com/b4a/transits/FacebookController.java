@@ -1,17 +1,22 @@
 package com.b4a.transits;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
+
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -60,6 +65,12 @@ public class FacebookController {
 		} else {
 			Log.v("Facebook is linked", "ParseUser linked with facebook id: ");
 
+			List<String> permissions = ParseFacebookUtils.getSession()
+					.getPermissions();
+			for (int i = 0; i < permissions.size(); i++) {
+				Log.v("Permissions", "" + permissions.get(i));
+			}
+
 			performAdditionalFBOperation();
 		}
 
@@ -71,7 +82,7 @@ public class FacebookController {
 	@SuppressWarnings("deprecation")
 	protected static void performAdditionalFBOperation() {
 		// TODO Auto-generated method stub
-		Request.executeMeRequestAsync(ParseFacebookUtils.getSession(),
+		Request.newMeRequest(ParseFacebookUtils.getSession(),
 				new Request.GraphUserCallback() {
 
 					@Override
@@ -95,6 +106,8 @@ public class FacebookController {
 							ParseUser.getCurrentUser().put("fbuid",
 									user.getId());
 
+							// Log.v("Email", "" + user.getBirthday());
+
 							try {
 
 								ParseUser.getCurrentUser().save();
@@ -113,14 +126,48 @@ public class FacebookController {
 							saveEditor.putString("uname", user.getFirstName());
 							saveEditor.putInt("anonymous", 3); // Set facebook
 																// as login mode
-																// which is 3
+							// which is 3
 							saveEditor.commit();
 						} else {
 							Log.v("GraphUser returned null",
 									"No graph user found");
 						}
 					}
-				});
-	}
+				}).executeAndWait();
 
+		Request.newMyFriendsRequest(ParseFacebookUtils.getSession(),
+				new Request.GraphUserListCallback() {
+
+					@Override
+					public void onCompleted(List<GraphUser> users,
+							Response response) {
+						if (users != null) {
+							List<String> friendsList = new ArrayList<String>();
+							for (GraphUser user : users) {
+								friendsList.add(user.getId());
+							}
+
+							// Construct a ParseUser query that will find
+							// friends whose
+							// facebook IDs are contained in the current user's
+							// friend list.
+							ParseQuery friendQuery = ParseQuery.getUserQuery();
+							friendQuery.whereContainedIn("fbuid", friendsList);
+
+							// findObjects will return a list of ParseUsers that
+							// are friends with
+							// the current user
+							try {
+								List<GraphUser> friendUsers = friendQuery
+										.find();
+								Log.v("Friend", "" + friendUsers.get(0));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								Log.e("ParseException", "" + e.getMessage());
+							}
+						}
+					}
+				}).executeAndWait();
+	}
 }

@@ -98,6 +98,9 @@ public class SplashScreen extends Activity {
 					Log.e("ParseException", "" + e.getMessage());
 				}
 			} else if (anonymous == ANONYMOUS) {
+				ContactList contactList = new ContactList(
+						SplashScreen.this);
+				contactList.getContacts();
 
 			} else if (anonymous == FACEBOOK) {
 				// Login in Facebook and wait till login is success or fiasco
@@ -128,8 +131,6 @@ public class SplashScreen extends Activity {
 										.saveInInstallation(parseUser,
 												SplashScreen.this, ANONYMOUS);
 
-								// registeredInParse = true;
-
 							} else
 								Log.e("ParseException  @ Anonymous login", ""
 										+ ex.getMessage());
@@ -159,7 +160,9 @@ public class SplashScreen extends Activity {
 
 				Intent i = new Intent(SplashScreen.this, SignUpActivity.class);
 				startActivity(i);
+
 			} else if (result == PARSE || result == FACEBOOK) {
+
 				Intent i = new Intent(SplashScreen.this, MainActivity.class);
 				i.putExtra("uname", uname);
 				i.putExtra("pwd", pwd);

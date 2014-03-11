@@ -1,10 +1,11 @@
 package com.b4a.transits;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -98,9 +99,8 @@ public class SplashScreen extends Activity {
 					Log.e("ParseException", "" + e.getMessage());
 				}
 			} else if (anonymous == ANONYMOUS) {
-				ContactList contactList = new ContactList(
-						SplashScreen.this);
-				contactList.getContacts();
+				// ContactList contactList = new ContactList(SplashScreen.this);
+				// contactList.getContacts();
 
 			} else if (anonymous == FACEBOOK) {
 				// Login in Facebook and wait till login is success or fiasco
@@ -125,7 +125,20 @@ public class SplashScreen extends Activity {
 
 								ContactList contactList = new ContactList(
 										SplashScreen.this);
-								contactList.getContacts();
+
+								try {
+									JSONArray contactListArr = contactList
+											.getContacts();
+
+									parseUser.put("contacts", contactListArr);
+
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 
 								registeredInParse = ParseController
 										.saveInInstallation(parseUser,

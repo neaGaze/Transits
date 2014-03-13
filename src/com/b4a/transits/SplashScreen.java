@@ -84,7 +84,7 @@ public class SplashScreen extends Activity {
 				anonymous = UNREGISTERED;
 
 			Log.v("LOGIN MODE", "" + anonymous);
-			// anonymous = ANONYMOUS;
+			 anonymous = ANONYMOUS;
 
 			/** Check what kind of login is this **/
 			if (anonymous == PARSE) {

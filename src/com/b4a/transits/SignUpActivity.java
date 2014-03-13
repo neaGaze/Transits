@@ -1,11 +1,14 @@
 package com.b4a.transits;
 
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -133,6 +136,13 @@ public class SignUpActivity extends Activity implements OnClickListener {
 				startActivity(i);
 				finish();
 			}
+		} else {
+			Log.v("This page is called after linking to facebook",
+					"Maybe it's facebook");
+			ParseFacebookUtils.finishAuthentication(requestCode, resultCode,
+					intent);
+		//	startActivity(new Intent(this, MainActivity.class));
+		//	finish();
 		}
 	}
 

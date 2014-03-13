@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
@@ -35,8 +36,10 @@ public class FacebookController {
 
 		if (!ParseFacebookUtils.isLinked(parseUser)) {
 
-			ParseFacebookUtils.link(parseUser, Arrays.asList("email"),
-					(Activity) context, new SaveCallback() {
+			ParseFacebookUtils.link(parseUser, Arrays.asList("email",
+					"basic_info", "user_about_me", "user_relationships",
+					"user_birthday", "user_location"), (Activity) context,
+					new SaveCallback() {
 
 						@Override
 						public void done(ParseException ex) {
@@ -53,8 +56,9 @@ public class FacebookController {
 									performAdditionalFBOperation();
 
 								} else {
-									Log.e("ParseUser is still not linked with Facebook",
-											"ParseUser not linked w/ Facebook");
+									Log.e("ParseUser + Facebook failed",
+											"ParseUser not linked w/ Facebook"
+													+ parseUser.getUsername());
 								}
 							} else {
 								Log.e("ParseException at FacebookController@pg-32",
@@ -160,13 +164,30 @@ public class FacebookController {
 							try {
 								List<GraphUser> friendUsers = friendQuery
 										.find();
-								Log.v("Friend", "" + friendUsers.get(0));
+								if (friendUsers != null)
+									Log.v("Friend size",
+											"" + friendsList.size());
+								else
+									Log.v("Empty friendUsers",
+											"Empty friend returnd");
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 								Log.e("ParseException", "" + e.getMessage());
 							}
 						}
+
+						/** Goto main activity **/
+						CustomToast.showToast(context,
+								"Facebook sign in successful");
+						Intent i = new Intent((Activity) context,
+								MainActivity.class);
+						i.putExtra("uname", ""
+								+ ParseUser.getCurrentUser().get("username"));
+						i.putExtra("pwd", "");
+						((Activity) context).startActivity(i);
+						((Activity) context).finish();
+
 					}
 				}).executeAndWait();
 	}

@@ -1,11 +1,15 @@
 package com.b4a.transits;
 
 import java.util.HashMap;
+
 import android.app.ProgressDialog;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.parse.FunctionCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseACL;
@@ -158,6 +162,7 @@ public class ParseController {
 
 	public static boolean saveInInstallation(ParseUser user,
 			final Context context, final int loginMode) {
+		
 		ParseInstallation inst = ParseController.getCurrentInstallation();
 		inst.put("user", user);
 		inst.setACL(new ParseACL(user));

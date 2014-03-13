@@ -2,12 +2,8 @@ package com.b4a.transits;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.parse.ParseException;
 import com.parse.ParseObject;
-
-import android.R.integer;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -133,8 +129,7 @@ public class ContactList {
 					String imName = imCur
 							.getString(imCur
 									.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA));
-					String imType;
-					imType = imCur
+					String imType = imCur
 							.getString(imCur
 									.getColumnIndex(ContactsContract.CommonDataKinds.Im.TYPE));
 					imArray.put(imName);
@@ -167,8 +162,8 @@ public class ContactList {
 
 				contactsListArray.put(contact);
 
-				if (++count > 200)
-					break;
+				// if (++count > 200)
+				// break;
 			}
 
 		}

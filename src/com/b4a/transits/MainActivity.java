@@ -4,6 +4,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.parse.ParseAnalytics;
 
 import android.os.Bundle;
@@ -67,6 +70,7 @@ public class MainActivity extends Activity implements B4AActivity {
 	private static final int LOGIN_CODE = 1;
 
 	private String currentUser;
+	private AdView mAdView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +122,21 @@ public class MainActivity extends Activity implements B4AActivity {
 
 		// Track app opens.
 		ParseAnalytics.trackAppOpened(getIntent());
+
+		// For ads
+		mAdView = new AdView(this);
+		mAdView.setAdUnitId(getResources().getString(R.string.ADD_UNIT_ID));
+		mAdView.setAdSize(AdSize.BANNER);
+		mAdView.setAdListener(new CustomAdListener(this));
+	//	RelativeLayout layout = new RelativeLayout(this);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+	//	layout.addView(mAdView, params);
+		this.layout.addView(mAdView);
+	
+		mAdView.loadAd(new AdRequest.Builder().build());
 	}
 
 	@Override

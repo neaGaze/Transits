@@ -84,7 +84,7 @@ public class SplashScreen extends Activity {
 				anonymous = UNREGISTERED;
 
 			Log.v("LOGIN MODE", "" + anonymous);
-			 anonymous = ANONYMOUS;
+			// anonymous = ANONYMOUS;
 
 			/** Check what kind of login is this **/
 			if (anonymous == PARSE) {
@@ -150,6 +150,10 @@ public class SplashScreen extends Activity {
 						}
 					});
 
+					while (registeredInParse == false) {
+
+						// Log.v("WAIT !! REGISTERING IN PARSE...","background process running");
+					}
 				}
 
 			} else {
@@ -157,10 +161,7 @@ public class SplashScreen extends Activity {
 						.showToast(SplashScreen.this,
 								"Are you on dope? 'cause this ain't never gonna happen nigga' !!!");
 			}
-			while (registeredInParse == false) {
 
-				// Log.v("WAIT !! REGISTERING IN PARSE...","background process running");
-			}
 			return anonymous;
 		}
 

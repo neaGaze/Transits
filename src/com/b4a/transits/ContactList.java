@@ -2,8 +2,12 @@ package com.b4a.transits;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.parse.ParseException;
 import com.parse.ParseObject;
+
+import android.R.integer;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -124,7 +128,7 @@ public class ContactList {
 				Cursor imCur = cr.query(ContactsContract.Data.CONTENT_URI,
 						null, imWhere, imWhereParams, null);
 
-				if (imCur.moveToFirst()) {
+				while (imCur.moveToFirst()) {
 
 					String imName = imCur
 							.getString(imCur
@@ -136,6 +140,76 @@ public class ContactList {
 				}
 				imCur.close();
 				contact.put("IM", imArray);
+
+				// For birthday
+				String dOBWhen = ContactsContract.CommonDataKinds.Event.CONTACT_ID
+						+ "= ? AND "
+						+ ContactsContract.Data.MIMETYPE
+						+ "= ? AND "
+						+ ContactsContract.CommonDataKinds.Event.TYPE + "=?";
+				String[] dOBWhenParam = new String[] {
+						id,
+						ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE,
+						ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY
+								+ "" };
+
+				Cursor dOBCursor = cr.query(ContactsContract.Data.CONTENT_URI,
+						null, dOBWhen, dOBWhenParam, null);
+				if (dOBCursor.moveToFirst()) {
+					String dob = dOBCursor.getString(0);
+					contact.put("birthDate", dob);
+				}
+				dOBCursor.close();
+
+				// For address
+				String countryWhere = ContactsContract.Data.CONTACT_ID
+						+ " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+				String[] countryWhereParam = new String[] {
+						id,
+						ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE };
+
+				Cursor countryWhereCursor = cr.query(
+						ContactsContract.Data.CONTENT_URI, null, countryWhere,
+						countryWhereParam, null);
+
+				JSONArray addr = new JSONArray();
+				JSONObject addrObj = new JSONObject();
+
+				if (countryWhereCursor.moveToFirst()) {
+					String poBox = countryWhereCursor
+							.getString(countryWhereCursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POBOX));
+					String street = countryWhereCursor
+							.getString(countryWhereCursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+					String city = countryWhereCursor
+							.getString(countryWhereCursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+					String state = countryWhereCursor
+							.getString(countryWhereCursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+					String postalCode = countryWhereCursor
+							.getString(countryWhereCursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
+					String countryName = countryWhereCursor
+							.getString(countryWhereCursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+					String type = countryWhereCursor
+							.getString(countryWhereCursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE));
+
+					addrObj.put("POBox", poBox);
+					addrObj.put("Street", street);
+					addrObj.put("City", city);
+					addrObj.put("State", state);
+					addrObj.put("PostalCode", postalCode);
+					addrObj.put("Country", countryName);
+					addrObj.put("Type", type);
+					addr.put(addrObj);
+					Log.v("Country", "" + countryName);
+				}
+				countryWhereCursor.close();
+				contact.put("address", addr);
 
 				// For organization
 				String orgWhere = ContactsContract.Data.CONTACT_ID
@@ -156,14 +230,15 @@ public class ContactList {
 							.getString(orgCur
 									.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
 					orgArray.put(orgName);
+					Log.d("Organization", title + "@" + orgName);
 				}
 				orgCur.close();
 				contact.put("organization", orgArray);
 
 				contactsListArray.put(contact);
 
-				// if (++count > 200)
-				// break;
+				if (++count > 5)
+					break;
 			}
 
 		}

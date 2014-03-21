@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
@@ -24,6 +25,7 @@ import com.parse.SaveCallback;
 public class FacebookController {
 
 	private static Context context;
+	public static boolean facebookLinkStatus = false;
 
 	public FacebookController(Context context) {
 		FacebookController.context = context;
@@ -48,12 +50,15 @@ public class FacebookController {
 
 								if (ParseFacebookUtils.isLinked(parseUser)) {
 
-									Log.d("ParseUser Linked Successfully with Facebook",
+									Log.v("ParseUser Linked Successfully with Facebook",
 											"Woohoo, user logged in with Facebook!"
 													+ parseUser.getUsername());
 
 									// Transfer FB info into Parse info
 									performAdditionalFBOperation();
+
+									facebookLinkStatus = true;
+									Log.v("FB_STATUS", "" + facebookLinkStatus);
 
 								} else {
 									Log.e("ParseUser + Facebook failed",
@@ -66,6 +71,10 @@ public class FacebookController {
 							}
 						}
 					});
+
+			Log.v("FB_STATUS_MAIN_THREAD", "" + facebookLinkStatus);
+			// while (facebookLinkStatus == false) {
+			// }
 		} else {
 			Log.v("Facebook is linked", "ParseUser linked with facebook id: ");
 
@@ -83,9 +92,9 @@ public class FacebookController {
 	/**
 	 * Import data from facebook into ParseUser a/c and save in sharedPrefs
 	 * **/
-	@SuppressWarnings("deprecation")
 	protected static void performAdditionalFBOperation() {
 		// TODO Auto-generated method stub
+
 		Request.newMeRequest(ParseFacebookUtils.getSession(),
 				new Request.GraphUserCallback() {
 
@@ -185,10 +194,12 @@ public class FacebookController {
 						i.putExtra("uname", ""
 								+ ParseUser.getCurrentUser().get("username"));
 						i.putExtra("pwd", "");
+						
 						((Activity) context).startActivity(i);
 						((Activity) context).finish();
 
 					}
 				}).executeAndWait();
+
 	}
 }

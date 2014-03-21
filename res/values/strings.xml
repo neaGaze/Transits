@@ -12,5 +12,6 @@
     <string name="app_id">658429227526786</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_facebook">FacebookActivity</string>
+    <string name="ADD_UNIT_ID">ca-app-pub-8604721075270081/4538679857</string>
 
 </resources>

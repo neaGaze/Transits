@@ -32,7 +32,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_up);
-
+/*
 		mAdView = new AdView(this);
 		mAdView.setAdUnitId(getResources().getString(R.string.ADD_UNIT_ID));
 		mAdView.setAdSize(AdSize.BANNER);
@@ -44,7 +44,8 @@ public class SignUpActivity extends Activity implements OnClickListener {
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
 		layout.addView(mAdView, params);
 		mAdView.loadAd(new AdRequest.Builder().build());
-		init();
+		
+*/		init();
 
 	}
 

@@ -33,7 +33,6 @@ public class ContactList {
 				null, null, null);
 
 		JSONArray contactsListArray = new JSONArray();
-
 		if (cur.getCount() > 0) {
 
 			int count = 0;

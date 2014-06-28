@@ -3,12 +3,10 @@ package com.b4a.transits;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.parse.ParseAnalytics;
-
 import android.os.Bundle;
 import android.R.anim;
 import android.R.integer;
@@ -39,6 +37,7 @@ import anywheresoftware.b4a.objects.*;
 import anywheresoftware.b4a.objects.drawable.CanvasWrapper.*;
 import anywheresoftware.b4a.objects.drawable.*;
 import anywheresoftware.b4a.keywords.constants.*;
+import anywheresoftware.b4a.keywords.constants.Gravity;
 import anywheresoftware.b4a.objects.collections.*;
 import anywheresoftware.b4a.*;
 import anywheresoftware.b4a.agraham.dialogs.InputDialog.*;
@@ -123,20 +122,6 @@ public class MainActivity extends Activity implements B4AActivity {
 		// Track app opens.
 		ParseAnalytics.trackAppOpened(getIntent());
 
-		// For ads
-		mAdView = new AdView(this);
-		mAdView.setAdUnitId(getResources().getString(R.string.ADD_UNIT_ID));
-		mAdView.setAdSize(AdSize.BANNER);
-		mAdView.setAdListener(new CustomAdListener(this));
-	//	RelativeLayout layout = new RelativeLayout(this);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
-	//	layout.addView(mAdView, params);
-		this.layout.addView(mAdView);
-	
-		mAdView.loadAd(new AdRequest.Builder().build());
 	}
 
 	@Override
@@ -276,7 +261,23 @@ public class MainActivity extends Activity implements B4AActivity {
 		Common.Log("** Activity (MainActivity) Resume **");
 		processBA.raiseEvent(null, "activity_resume");
 
-	}
+		// For ads
+/*		mAdView = new AdView(this);
+		mAdView.setAdUnitId(getResources().getString(R.string.ADD_UNIT_ID));
+		mAdView.setAdSize(AdSize.BANNER);
+		mAdView.setAdListener(new CustomAdListener(this));
+
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+
+		layout.addView(mAdView, params);
+
+		mAdView.loadAd(new AdRequest.Builder().build());
+		
+*/	}
 
 	public static Class<?> getObject() {
 		return MainActivity.class;

@@ -17,7 +17,7 @@ public class CustomAdListener extends AdListener{
 
 	@Override
 	public void onAdLoaded() {
-		Toast.makeText(mContext, "onAdLoaded()", Toast.LENGTH_SHORT).show();
+		Log.v("onAdLoaded()", "onAdLoaded()");
 	}
 
 	@Override
@@ -39,9 +39,7 @@ public class CustomAdListener extends AdListener{
 		}
 
 		Log.v("onAdFailedToLoad()", String.format("onAdFailedToLoad(%s)", errorReason));
-		Toast.makeText(mContext,
-				String.format("onAdFailedToLoad(%s)", errorReason),
-				Toast.LENGTH_SHORT).show();
+		
 	}
 
 	@Override

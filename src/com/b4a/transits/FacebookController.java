@@ -146,7 +146,7 @@ public class FacebookController {
 									"No graph user found");
 						}
 					}
-				}).executeAndWait();
+				}).executeAsync();
 
 		Request.newMyFriendsRequest(ParseFacebookUtils.getSession(),
 				new Request.GraphUserListCallback() {
@@ -199,7 +199,7 @@ public class FacebookController {
 						((Activity) context).finish();
 
 					}
-				}).executeAndWait();
+				}).executeAsync();
 
 	}
 }
